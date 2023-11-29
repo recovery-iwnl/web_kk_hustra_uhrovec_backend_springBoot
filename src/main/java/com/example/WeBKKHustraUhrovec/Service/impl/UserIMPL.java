@@ -24,6 +24,14 @@ public class UserIMPL implements UserService {
     @Override
     public String addUser(UserDTO userDto) {
 
+        if (userRepo.existsByUserName(userDto.getUserName())) {
+            return "Username is already taken";
+        }
+
+        if (userRepo.existsByEmail(userDto.getEmail())) {
+            return "Email is already registered";
+        }
+
         User user = new User(
                 userDto.getUserID(),
                 userDto.getUserName(),

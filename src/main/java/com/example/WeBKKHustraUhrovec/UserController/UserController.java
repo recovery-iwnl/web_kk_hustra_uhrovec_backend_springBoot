@@ -31,7 +31,7 @@ public class UserController {
 
         LoginResponse loginResponse = userService.loginUser(loginDto);
 
-                return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(loginResponse);
     }
 
 }
