@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -36,9 +35,9 @@ public class UserController {
     }
 
     @GetMapping(path = "/getUser")
-    public User getUser(@RequestBody UserDTO userDto) {
+    public User getUser(@RequestParam String email) {
 
-        return userService.getUser(userDto);
+        return userService.getUser(email);
     }
 
 }

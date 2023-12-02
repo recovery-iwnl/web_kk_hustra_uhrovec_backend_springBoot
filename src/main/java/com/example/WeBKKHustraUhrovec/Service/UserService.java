@@ -15,5 +15,6 @@ public interface UserService {
 
     LoginResponse loginUser(LoginDTO loginDto);
 
-    User getUser(UserDTO userDTO);
+    User getUser(String email);
+
 }
