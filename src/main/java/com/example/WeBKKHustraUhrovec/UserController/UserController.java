@@ -4,11 +4,14 @@ package com.example.WeBKKHustraUhrovec.UserController;
 
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
+import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -21,9 +24,7 @@ public class UserController {
     @PostMapping(path = "/save")
     public String saveUser(@RequestBody UserDTO userDto) {
 
-        String id = userService.addUser(userDto);
-
-        return id;
+        return userService.addUser(userDto);
     }
 
     @PostMapping(path = "/login")
@@ -32,6 +33,12 @@ public class UserController {
         LoginResponse loginResponse = userService.loginUser(loginDto);
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping(path = "/getUser")
+    public User getUser(@RequestBody UserDTO userDto) {
+
+        return userService.getUser(userDto);
     }
 
 }
