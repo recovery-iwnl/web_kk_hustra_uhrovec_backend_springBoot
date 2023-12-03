@@ -17,4 +17,5 @@ public interface UserService {
 
     User getUser(String email);
 
+    void deleteUser(String email);
 }

@@ -36,8 +36,11 @@ public class UserController {
 
     @GetMapping(path = "/getUser")
     public User getUser(@RequestParam String email) {
-
         return userService.getUser(email);
+    }
+    @DeleteMapping(path = "/deleteUser")
+    public void deleteUser(@RequestParam String email) {
+        userService.deleteUser(email);
     }
 
 }

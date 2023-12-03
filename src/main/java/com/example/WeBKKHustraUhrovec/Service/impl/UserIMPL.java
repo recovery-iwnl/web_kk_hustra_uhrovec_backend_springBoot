@@ -71,5 +71,11 @@ public class UserIMPL implements UserService {
         return userRepo.findByEmail(email);
     }
 
+    @Override
+    public void deleteUser(String email) {
+        User user = userRepo.findByEmail(email);
+        userRepo.deleteById(user.getUserID());
+    }
+
 
 }
