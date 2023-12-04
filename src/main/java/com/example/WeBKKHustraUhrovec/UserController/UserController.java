@@ -6,8 +6,15 @@ import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -43,6 +50,19 @@ public class UserController {
     @PutMapping(path = "/updateUser")
     public User updateUser(@RequestBody UserDTO userDto) {
         return userService.updateUser(userDto);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        BindingResult result = ex.getBindingResult();
+        StringBuilder errorMessages = new StringBuilder();
+
+        result.getFieldErrors().forEach(fieldError -> {
+            errorMessages.append(fieldError.getDefaultMessage()).append("\n");
+        });
+
+        return new ResponseEntity<>(errorMessages.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

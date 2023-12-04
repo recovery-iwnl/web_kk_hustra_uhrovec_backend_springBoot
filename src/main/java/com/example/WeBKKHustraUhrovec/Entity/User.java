@@ -1,6 +1,11 @@
 package com.example.WeBKKHustraUhrovec.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name="user")
@@ -11,12 +16,19 @@ public class User {
     private int userID;
 
     @Column(name = "username", length = 255)
+    @Size(min = 8, max = 255, message = "Username must be at least 8 characters and less than 255 characters")
+    @NotEmpty
     private String userName;
 
     @Column(name = "email", length = 255)
+    @Email( message = "Invalid email address")
+    @Size (max = 255, message = "Email must be max 255 characters")
+    @NotEmpty
     private String email;
 
     @Column(name = "password", length = 255)
+    @Size(min = 8, max = 255, message = "Password must be at least 8 characters and less than 255 characters")
+    @NotEmpty
     private String password;
 
 

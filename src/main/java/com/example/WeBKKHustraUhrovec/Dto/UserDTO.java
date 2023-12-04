@@ -1,6 +1,7 @@
 package com.example.WeBKKHustraUhrovec.Dto;
 
 
+import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
