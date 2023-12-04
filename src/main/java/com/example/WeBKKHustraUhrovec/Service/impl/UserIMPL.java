@@ -77,5 +77,14 @@ public class UserIMPL implements UserService {
         userRepo.deleteById(user.getUserID());
     }
 
+    @Override
+    public User updateUser(UserDTO userDto) {
+        User user = userRepo.findById(userDto.getUserID()).get();
+        user.setUserName(userDto.getUserName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        return userRepo.save(user);
+    }
+
 
 }

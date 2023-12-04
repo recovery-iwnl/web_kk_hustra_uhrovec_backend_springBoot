@@ -1,10 +1,14 @@
 package com.example.WeBKKHustraUhrovec.Dto;
 
+
+
 public class UserDTO {
 
     private int userID;
+
     private String userName;
     private String email;
+
     private String password;
 
     public UserDTO(int userID, String userName, String email, String password) {

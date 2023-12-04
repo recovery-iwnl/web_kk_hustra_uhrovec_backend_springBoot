@@ -1,7 +1,5 @@
 package com.example.WeBKKHustraUhrovec.UserController;
 
-
-
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
@@ -41,6 +39,10 @@ public class UserController {
     @DeleteMapping(path = "/deleteUser")
     public void deleteUser(@RequestParam String email) {
         userService.deleteUser(email);
+    }
+    @PutMapping(path = "/updateUser")
+    public User updateUser(@RequestBody UserDTO userDto) {
+        return userService.updateUser(userDto);
     }
 
 }
