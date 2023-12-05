@@ -52,17 +52,5 @@ public class UserController {
         return userService.updateUser(userDto);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        BindingResult result = ex.getBindingResult();
-        StringBuilder errorMessages = new StringBuilder();
-
-        result.getFieldErrors().forEach(fieldError -> {
-            errorMessages.append(fieldError.getDefaultMessage()).append("\n");
-        });
-
-        return new ResponseEntity<>(errorMessages.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
 }

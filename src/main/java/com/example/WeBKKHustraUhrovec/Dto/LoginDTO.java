@@ -1,6 +1,9 @@
 package com.example.WeBKKHustraUhrovec.Dto;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class LoginDTO {
+
     private String email;
     private String password;
 
