@@ -82,23 +82,19 @@ public class UserIMPL implements UserService {
     }
 
     @Override
-    public User updateUser(User userN) {
-        User user = userRepo.findById(userN.getUserID()).orElse(null);
+    public User updateUser(UserDTO userDto) {
+        User user = userRepo.findById(userDto.getUserID()).orElse(null);
         if (user != null) {
-            // Check if the new username is already taken by another user
-            if (!user.getUserName().equals(userN.getUserName()) && userRepo.existsByUserName(userN.getUserName())) {
+            if (!user.getUserName().equals(userDto.getUserName()) && userRepo.existsByUserName(userDto.getUserName())) {
                 throw new UserUpdateException("Username is already taken");
             }
-            // Check if the new email is already registered by another user
-            if (!user.getEmail().equals(userN.getEmail()) && userRepo.existsByEmail(userN.getEmail())) {
+            if (!user.getEmail().equals(userDto.getEmail()) && userRepo.existsByEmail(userDto.getEmail())) {
                 throw new UserUpdateException("Email is already registered");
             }
 
-            // Update user details
-            user.setUserName(userN.getUserName());
-            user.setEmail(userN.getEmail());
-            //user.setPassword(userN.getPassword());
-            user.setPassword(userN.getPassword());
+            user.setUserName(userDto.getUserName());
+            user.setEmail(userDto.getEmail());
+            user.setPassword(passwdEncoder.encode(userDto.getPassword()));
 
             return userRepo.save(user);
         } else {
