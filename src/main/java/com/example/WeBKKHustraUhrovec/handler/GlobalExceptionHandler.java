@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.handler;
 
+import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,5 +19,10 @@ public class GlobalExceptionHandler {
             errors.append(violation.getPropertyPath().toString()).append(": ").append(violation.getMessage()).append("\n");
         }
         return ResponseEntity.badRequest().body(errors.toString());
+    }
+
+    @ExceptionHandler(UserUpdateException.class)
+    public ResponseEntity<String> handleUserUpdateException(UserUpdateException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

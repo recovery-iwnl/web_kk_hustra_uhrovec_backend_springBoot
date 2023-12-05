@@ -48,8 +48,8 @@ public class UserController {
         userService.deleteUser(email);
     }
     @PutMapping(path = "/updateUser")
-    public User updateUser(@RequestBody UserDTO userDto) {
-        return userService.updateUser(userDto);
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
 

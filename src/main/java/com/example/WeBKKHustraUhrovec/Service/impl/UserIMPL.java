@@ -6,6 +6,7 @@ import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Repo.UserRepo;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
+import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,8 @@ public class UserIMPL implements UserService {
         if (user != null) {
             String password = loginDto.getPassword();
             String encodedPasswd = user.getPassword();
+            System.out.println("Entered Password: " + password);
+            System.out.println("Encoded Password in DB: " + encodedPasswd);
             if (passwdEncoder.matches(password, encodedPasswd)) {
                 Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
                 if (userN.isPresent()) {
@@ -79,12 +82,28 @@ public class UserIMPL implements UserService {
     }
 
     @Override
-    public User updateUser(UserDTO userDto) {
-        User user = userRepo.findById(userDto.getUserID()).get();
-        user.setUserName(userDto.getUserName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        return userRepo.save(user);
+    public User updateUser(User userN) {
+        User user = userRepo.findById(userN.getUserID()).orElse(null);
+        if (user != null) {
+            // Check if the new username is already taken by another user
+            if (!user.getUserName().equals(userN.getUserName()) && userRepo.existsByUserName(userN.getUserName())) {
+                throw new UserUpdateException("Username is already taken");
+            }
+            // Check if the new email is already registered by another user
+            if (!user.getEmail().equals(userN.getEmail()) && userRepo.existsByEmail(userN.getEmail())) {
+                throw new UserUpdateException("Email is already registered");
+            }
+
+            // Update user details
+            user.setUserName(userN.getUserName());
+            user.setEmail(userN.getEmail());
+            //user.setPassword(userN.getPassword());
+            user.setPassword(userN.getPassword());
+
+            return userRepo.save(user);
+        } else {
+            throw new UserUpdateException("User not found");
+        }
     }
 
 
