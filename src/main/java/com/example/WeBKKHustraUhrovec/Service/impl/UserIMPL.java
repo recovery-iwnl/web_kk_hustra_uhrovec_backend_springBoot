@@ -38,9 +38,11 @@ public class UserIMPL implements UserService {
                 userDto.getUserID(),
                 userDto.getUserName(),
                 userDto.getEmail(),
-                this.passwdEncoder.encode(userDto.getPassword())
+                userDto.getPassword()
         );
 
+        userRepo.save(user);
+        user.setPassword(this.passwdEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
         return user.getUserName();
@@ -94,7 +96,9 @@ public class UserIMPL implements UserService {
 
             user.setUserName(userDto.getUserName());
             user.setEmail(userDto.getEmail());
-            user.setPassword(passwdEncoder.encode(userDto.getPassword()));
+            user.setPassword(userDto.getPassword());
+            userRepo.save(user);
+            user.setPassword(this.passwdEncoder.encode(user.getPassword()));
 
             return userRepo.save(user);
         } else {
