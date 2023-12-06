@@ -51,26 +51,27 @@ public class UserIMPL implements UserService {
 
     @Override
     public LoginResponse loginUser(LoginDTO loginDto) {
-        if (Objects.equals(loginDto.getEmail(), "") || Objects.equals(loginDto.getPassword(), "")) {
-            User user = userRepo.findByEmail(loginDto.getEmail());
-            if (user != null) {
-                String password = loginDto.getPassword();
-                String encodedPasswd = user.getPassword();
-                if (passwdEncoder.matches(password, encodedPasswd)) {
-                    Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
-                    if (userN.isPresent()) {
-                        return new LoginResponse("Login Successful", true);
-                    } else {
-                        return new LoginResponse("Login Failed", false);
-                    }
+        if (loginDto.getPassword() == null || loginDto.getEmail() == null) {
+            return new LoginResponse("Wrong parameters", false);
+        }
+        User user = userRepo.findByEmail(loginDto.getEmail());
+        if (user != null) {
+            String password = loginDto.getPassword();
+            String encodedPasswd = user.getPassword();
+            if (passwdEncoder.matches(password, encodedPasswd)) {
+                Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
+                if (userN.isPresent()) {
+                    return new LoginResponse("Login Successful", true);
                 } else {
-                    return new LoginResponse("Password Doesn't Match", false);
+                    return new LoginResponse("Login Failed", false);
                 }
-
             } else {
-                return new LoginResponse("Email Doesn't Exist", false);
+                return new LoginResponse("Password Doesn't Match", false);
             }
-        }  return new LoginResponse("Wrong parameters entered", false);
+
+        } else {
+            return new LoginResponse("Email Doesn't Exist", false);
+        }
     }
 
     @Override
