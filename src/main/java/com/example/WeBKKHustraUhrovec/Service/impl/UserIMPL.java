@@ -10,8 +10,6 @@ import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
