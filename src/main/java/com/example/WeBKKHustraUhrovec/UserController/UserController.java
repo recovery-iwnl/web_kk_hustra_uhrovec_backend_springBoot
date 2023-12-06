@@ -44,8 +44,8 @@ public class UserController {
         return userService.getUser(email);
     }
     @DeleteMapping(path = "/deleteUser")
-    public void deleteUser(@RequestParam String email) {
-        userService.deleteUser(email);
+    public String deleteUser(@RequestParam String email) {
+        return userService.deleteUser(email);
     }
     @PutMapping(path = "/updateUser")
     public User updateUser(@RequestBody UserDTO userDto) {

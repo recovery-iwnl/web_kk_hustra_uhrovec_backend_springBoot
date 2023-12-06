@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -50,26 +51,26 @@ public class UserIMPL implements UserService {
 
     @Override
     public LoginResponse loginUser(LoginDTO loginDto) {
-        User user = userRepo.findByEmail(loginDto.getEmail());
-        if (user != null) {
-            String password = loginDto.getPassword();
-            String encodedPasswd = user.getPassword();
-            System.out.println("Entered Password: " + password);
-            System.out.println("Encoded Password in DB: " + encodedPasswd);
-            if (passwdEncoder.matches(password, encodedPasswd)) {
-                Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
-                if (userN.isPresent()) {
-                    return new LoginResponse("Login Successful", true);
+        if (Objects.equals(loginDto.getEmail(), "") || Objects.equals(loginDto.getPassword(), "")) {
+            User user = userRepo.findByEmail(loginDto.getEmail());
+            if (user != null) {
+                String password = loginDto.getPassword();
+                String encodedPasswd = user.getPassword();
+                if (passwdEncoder.matches(password, encodedPasswd)) {
+                    Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
+                    if (userN.isPresent()) {
+                        return new LoginResponse("Login Successful", true);
+                    } else {
+                        return new LoginResponse("Login Failed", false);
+                    }
                 } else {
-                    return new LoginResponse("Login Failed", false);
+                    return new LoginResponse("Password Doesn't Match", false);
                 }
-            } else {
-                return new LoginResponse("Password Doesn't Match", false);
-            }
 
-        } else {
-            return new LoginResponse("Email Doesn't Exist", false);
-        }
+            } else {
+                return new LoginResponse("Email Doesn't Exist", false);
+            }
+        }  return new LoginResponse("Wrong parameters entered", false);
     }
 
     @Override
@@ -78,9 +79,14 @@ public class UserIMPL implements UserService {
     }
 
     @Override
-    public void deleteUser(String email) {
-        User user = userRepo.findByEmail(email);
-        userRepo.deleteById(user.getUserID());
+    public String deleteUser(String email) {
+        if (userRepo.findByEmail(email) == null) {
+            return "User doesn't exist";
+        } else {
+            User user = userRepo.findByEmail(email);
+            userRepo.deleteById(user.getUserID());
+            return "User " + user.getUserName() + " was deleted.";
+        }
     }
 
     @Override

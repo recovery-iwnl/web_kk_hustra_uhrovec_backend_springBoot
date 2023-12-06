@@ -21,7 +21,7 @@ public class User {
 
     @Column(name = "email", length = 255)
     @Email( message = "Invalid email address")
-    @Size (max = 255, message = "Email must be max 255 characters")
+    @Size (max = 255, message = "Email must be less than 255 characters")
     @NotEmpty
     private String email;
 
