@@ -3,6 +3,7 @@ package com.example.WeBKKHustraUhrovec.Service.impl;
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
+import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Repo.UserRepo;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
@@ -10,6 +11,8 @@ import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,7 +40,8 @@ public class UserIMPL implements UserService {
                 userDto.getUserID(),
                 userDto.getUserName(),
                 userDto.getEmail(),
-                userDto.getPassword()
+                userDto.getPassword(),
+                UserRole.FAN
         );
 
         userRepo.save(user);
@@ -78,6 +82,11 @@ public class UserIMPL implements UserService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
+
+    @Override
     public String deleteUser(String email) {
         if (userRepo.findByEmail(email) == null) {
             return "User doesn't exist";
@@ -102,6 +111,7 @@ public class UserIMPL implements UserService {
             user.setUserName(userDto.getUserName());
             user.setEmail(userDto.getEmail());
             user.setPassword(userDto.getPassword());
+            user.setRole(userDto.getRole());
             userRepo.save(user);
             user.setPassword(this.passwdEncoder.encode(user.getPassword()));
 

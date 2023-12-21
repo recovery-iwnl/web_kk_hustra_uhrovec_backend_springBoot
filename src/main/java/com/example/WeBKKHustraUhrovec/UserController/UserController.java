@@ -6,15 +6,10 @@ import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 @RestController
@@ -43,6 +38,9 @@ public class UserController {
     public User getUser(@RequestParam String email) {
         return userService.getUser(email);
     }
+
+    @GetMapping(path = "/getUsersList")
+    public List<User> getAllUsers() {return userService.getAllUsers();}
     @DeleteMapping(path = "/deleteUser")
     public String deleteUser(@RequestParam String email) {
         return userService.deleteUser(email);

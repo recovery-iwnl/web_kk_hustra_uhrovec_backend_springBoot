@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.Entity;
 
+import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,12 +31,17 @@ public class User {
     @NotEmpty
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", length = 20)
+    private UserRole role;
 
-    public User(int userID, String userName, String email, String password) {
+
+    public User(int userID, String userName, String email, String password, UserRole role) {
         this.userID = userID;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public User() {
@@ -73,6 +79,14 @@ public class User {
         this.password = password;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -80,6 +94,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

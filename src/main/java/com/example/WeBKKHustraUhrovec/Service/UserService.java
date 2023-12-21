@@ -6,6 +6,8 @@ import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserService {
 
@@ -18,4 +20,6 @@ public interface UserService {
     String deleteUser(String email);
 
     User updateUser(UserDTO userDto);
+
+    List<User> getAllUsers();
 }
