@@ -1,4 +1,4 @@
-package com.example.WeBKKHustraUhrovec.UserController;
+package com.example.WeBKKHustraUhrovec.Controller;
 
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
