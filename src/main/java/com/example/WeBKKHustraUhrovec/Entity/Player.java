@@ -1,6 +1,9 @@
 package com.example.WeBKKHustraUhrovec.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -24,18 +27,19 @@ public class Player {
     private String surname;
 
     @Column(name = "player_age", length = 255)
-    @NotEmpty(message = "Age must not be empty")
     @Positive(message = "Age must be greater than 0")
-    private String age;
+    private int age;
 
     @Column(name = "player_points", length = 255)
-    @NotEmpty(message = "Points must not be empty")
     @PositiveOrZero(message = "Points must be greater than or equal to 0")
-    private String points;
+    private int points;
 
+    @ManyToOne()
+    @JoinColumn(name = "team_id")
+    @JsonBackReference
+    private Team team;
 
-    public Player(int playerID, String name, String surname, String age, String points) {
-        this.playerID = playerID;
+    public Player(String name, String surname, int age, int points) {
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -43,6 +47,7 @@ public class Player {
     }
 
     public Player() {
+
     }
 
     public int getPlayerID() {
@@ -69,19 +74,27 @@ public class Player {
         this.surname = surname;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public String getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(int points) {
         this.points = points;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

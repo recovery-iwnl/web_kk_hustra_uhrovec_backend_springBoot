@@ -1,10 +1,10 @@
 package com.example.WeBKKHustraUhrovec.Service.impl;
 
 import com.example.WeBKKHustraUhrovec.Entity.Player;
-import com.example.WeBKKHustraUhrovec.Entity.User;
+import com.example.WeBKKHustraUhrovec.Entity.Team;
 import com.example.WeBKKHustraUhrovec.Repo.PlayerRepo;
+import com.example.WeBKKHustraUhrovec.Repo.TeamRepo;
 import com.example.WeBKKHustraUhrovec.Service.PlayerService;
-import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,15 @@ public class PlayerIMPL implements PlayerService {
 
     @Autowired
     private PlayerRepo playerRepo;
+
+    @Autowired
+    private TeamRepo teamRepo;
+
     @Override
-    public Player addPlayer(Player player) {
-        Player playerN = player;
-        playerRepo.save(playerN);
-        return playerN;
+    public Player addPlayer(String id, Player player) {
+        Team teamO = teamRepo.findById(Integer.valueOf(id)).orElse(null);
+        player.setTeam(teamO);
+        return playerRepo.save(player);
     }
 
     @Override
@@ -46,12 +50,13 @@ public class PlayerIMPL implements PlayerService {
     @Override
     public Player updatePlayer(Player player) {
         Player playerN = playerRepo.findById(player.getPlayerID()).orElse(null);
-        System.out.println("Updated player data: " + playerN);
         if (playerN != null) {
+            Team teamN = teamRepo.findById(playerN.getTeam().getTeamId()).orElse(null);
             playerN.setName(player.getName());
             playerN.setSurname(player.getSurname());
             playerN.setAge(player.getAge());
             playerN.setPoints(player.getPoints());
+            playerN.setTeam(teamN);
             return playerRepo.save(playerN);
         } else {
             return null;

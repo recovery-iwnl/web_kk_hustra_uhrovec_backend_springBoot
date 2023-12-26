@@ -18,8 +18,8 @@ public class PlayerController {
     private PlayerService playerService;
 
     @PostMapping(path = "/save")
-    public Player savePlayer(@RequestBody Player player) {
-        return playerService.addPlayer(player);
+    public Player savePlayer(@RequestParam String id, @RequestBody Player player) {
+        return playerService.addPlayer(id, player);
     }
     @GetMapping(path = "/getPlayer")
     public Optional<Player> getPlayer(@RequestParam String id) {

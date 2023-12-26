@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public interface PlayerService {
 
-    Player addPlayer(Player player);
+    Player addPlayer(String id, Player player);
 
     Optional<Player> getPlayer(String id);
 
