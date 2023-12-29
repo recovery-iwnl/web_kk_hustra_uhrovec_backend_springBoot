@@ -2,8 +2,6 @@ package com.example.WeBKKHustraUhrovec.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -34,20 +32,45 @@ public class Player {
     @PositiveOrZero(message = "Points must be greater than or equal to 0")
     private int points;
 
+    @Column(name = "matches_played", length = 255)
+    @PositiveOrZero(message = "Matches played must be greater than or equal to 0")
+    private int matchesPlayed;
+    @Column(name = "players_best", length = 255)
+    @PositiveOrZero(message = "Players best must be greater than or equal to 0")
+    private int playersBest;
+
     @ManyToOne()
     @JoinColumn(name = "team_id")
     @JsonBackReference
     private Team team;
 
-    public Player(String name, String surname, int age, int points) {
+    public Player(String name, String surname, int age, int points, int matchesPlayed, int playersBest) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.points = points;
+        this.matchesPlayed = matchesPlayed;
+        this.playersBest = playersBest;
     }
 
     public Player() {
 
+    }
+
+    public int getPlayersBest() {
+        return playersBest;
+    }
+
+    public void setPlayersBest(int playersBest) {
+        this.playersBest = playersBest;
+    }
+
+    public int getMatchesPlayed() {
+        return matchesPlayed;
+    }
+
+    public void setMatchesPlayed(int matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
     }
 
     public int getPlayerID() {
