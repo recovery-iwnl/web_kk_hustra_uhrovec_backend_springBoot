@@ -17,7 +17,7 @@ public class Result {
     private int resultId;
 
     @Column(name = "date")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
 
     @ManyToOne
@@ -182,12 +182,14 @@ public class Result {
     public Result(LocalDate date, Team teamHome, Team teamAway, Player player1Home, Player player2Home, Player player3Home, Player player4Home, Player player5Home, Player player6Home, int player1ScoreHome, double player1PointsHome, int player2ScoreHome, double player2PointsHome, int player3ScoreHome, double player3PointsHome, int player4ScoreHome, double player4PointsHome, int player5ScoreHome, double player5PointsHome, int player6ScoreHome, double player6PointsHome, Player player1Away, Player player2Away, Player player3Away, Player player4Away, Player player5Away, Player player6Away, int player1ScoreAway, double player1PointsAway, int player2ScoreAway, double player2PointsAway, int player3ScoreAway, double player3PointsAway, int player4ScoreAway, double player4PointsAway, int player5ScoreAway, double player5PointsAway, int player6ScoreAway, double player6PointsAway, int team1ScoreOverall, int team2ScoreOverall, double team1PointsOverall, double team2PointsOverall) {
         this.teamHome = teamHome;
         this.teamAway = teamAway;
+
         this.player1Home = player1Home;
         this.player2Home = player2Home;
         this.player3Home = player3Home;
         this.player4Home = player4Home;
         this.player5Home = player5Home;
         this.player6Home = player6Home;
+
         this.player1ScoreHome = player1ScoreHome;
         this.player1PointsHome = player1PointsHome;
         this.player2ScoreHome = player2ScoreHome;
@@ -200,12 +202,14 @@ public class Result {
         this.player5PointsHome = player5PointsHome;
         this.player6ScoreHome = player6ScoreHome;
         this.player6PointsHome = player6PointsHome;
+
         this.player1Away = player1Away;
         this.player2Away = player2Away;
         this.player3Away = player3Away;
         this.player4Away = player4Away;
         this.player5Away = player5Away;
         this.player6Away = player6Away;
+
         this.player1ScoreAway = player1ScoreAway;
         this.player1PointsAway = player1PointsAway;
         this.player2ScoreAway = player2ScoreAway;
@@ -218,10 +222,12 @@ public class Result {
         this.player5PointsAway = player5PointsAway;
         this.player6ScoreAway = player6ScoreAway;
         this.player6PointsAway = player6PointsAway;
+
         this.team1ScoreOverall = team1ScoreOverall;
         this.team2ScoreOverall = team2ScoreOverall;
         this.team1PointsOverall = team1PointsOverall;
         this.team2PointsOverall = team2PointsOverall;
+
         this.date = date;
     }
 

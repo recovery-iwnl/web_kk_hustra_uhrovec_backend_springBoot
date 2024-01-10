@@ -38,6 +38,12 @@ public class ResultController {
                 result);
     }
 
+    @PostMapping(path = "/saveSimple")
+    public Result saveResultSimple(@RequestParam String teamIdHome,@RequestParam String teamIdAway,
+                             @RequestBody Result result) {
+        return resultService.addResultSimple(teamIdHome, teamIdAway, result);
+    }
+
     @GetMapping(path = "/getResult")
     public Optional<Result> getResult(@RequestParam String id) {
         return resultService.getResult(id);

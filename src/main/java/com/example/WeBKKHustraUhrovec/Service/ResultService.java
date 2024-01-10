@@ -15,6 +15,8 @@ public interface ResultService {
                      String player1IdAway, String player2IdAway, String player3IdAway, String player4IdAway, String player5IdAway, String player6IdAway,
                      Result result);
 
+    Result addResultSimple(String teamIdHome, String teamIdAway, Result result);
+
     Optional<Result> getResult(String id);
 
     List<Result> getAllResults();

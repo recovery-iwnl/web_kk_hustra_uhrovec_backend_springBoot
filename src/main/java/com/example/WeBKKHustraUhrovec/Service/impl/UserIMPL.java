@@ -121,5 +121,16 @@ public class UserIMPL implements UserService {
         }
     }
 
+    @Override
+    public User updateUserRole(String id, String role) {
+        User user = userRepo.findById(Integer.valueOf(id)).orElse(null);
+        if (user != null) {
+            user.setRole(UserRole.valueOf(role));
+            return userRepo.save(user);
+        } else {
+            throw new UserUpdateException("User not found");
+        }
+    }
+
 
 }

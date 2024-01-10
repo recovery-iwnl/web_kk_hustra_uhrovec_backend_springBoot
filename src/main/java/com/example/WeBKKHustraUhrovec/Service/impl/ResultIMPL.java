@@ -63,6 +63,16 @@ public class ResultIMPL implements ResultService {
         return resultRepo.save(result);
     }
 
+    public Result addResultSimple(String teamIdHome, String teamIdAway, Result result) {
+        Team teamHome = teamRepo.findById(Integer.valueOf(teamIdHome)).orElse(null);
+        Team teamAway = teamRepo.findById(Integer.valueOf(teamIdAway)).orElse(null);
+
+        result.setTeamHome(teamHome);
+        result.setTeamAway(teamAway);
+
+        return resultRepo.save(result);
+    }
+
     @Override
     public Optional<Result> getResult(String id) {
         return resultRepo.findById(Integer.valueOf(id));
