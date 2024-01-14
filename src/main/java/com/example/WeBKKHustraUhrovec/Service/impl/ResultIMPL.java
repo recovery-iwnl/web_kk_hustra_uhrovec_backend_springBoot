@@ -10,6 +10,7 @@ import com.example.WeBKKHustraUhrovec.Service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -187,6 +188,19 @@ public class ResultIMPL implements ResultService {
     @Override
     public List<Result> getAllResults() {
         return resultRepo.findAll();
+    }
+
+    @Override
+    public List<Result> getResultsUhrovec() {
+        List<Result> results = resultRepo.findAll();
+        List<Result> filtered = new ArrayList<>();
+
+        for (Result r: results) {
+            if (r.getTeamAway().getTeamName().equals("KK Hustra Uhrovec") || r.getTeamHome().getTeamName().equals("KK Hustra Uhrovec")) {
+                filtered.add(r);
+            }
+        }
+        return filtered;
     }
 
     @Override

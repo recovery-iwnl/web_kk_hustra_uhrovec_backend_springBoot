@@ -54,6 +54,11 @@ public class ResultController {
         return resultService.getAllResults();
     }
 
+    @GetMapping(path = "/getResultsUhrovecList")
+    public List<Result> getResultsUhrovec() {
+        return resultService.getResultsUhrovec();
+    }
+
     @DeleteMapping(path = "/deleteResult")
     public String deleteResult(@RequestParam Integer id) {
         return resultService.deleteResult(id);
