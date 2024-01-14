@@ -29,8 +29,8 @@ public class Team {
     @Column(name = "points")
     private int points;
 
-    @Column(name = "average_thrown_frames")
-    private int averageThrownFrames;
+    @Column(name = "thrown_frames")
+    private int thrownFrames;
 
     @Column(name = "matches_played")
     private int matchesPlayed;
@@ -44,11 +44,11 @@ public class Team {
     @Column(name = "matches_draw")
     private int matchesDraw;
 
-    public Team(String teamName, int points, int averageThrownFrames,
+    public Team(String teamName, int points, int thrownFrames,
                 int matchesPlayed, int matchesWon, int matchesLost, int matchesDraw) {
         this.teamName = teamName;
         this.points = points;
-        this.averageThrownFrames = averageThrownFrames;
+        this.thrownFrames = thrownFrames;
         this.matchesPlayed = matchesPlayed;
         this.matchesWon = matchesWon;
         this.matchesLost = matchesLost;
@@ -90,12 +90,12 @@ public class Team {
         this.points = points;
     }
 
-    public int getAverageThrownFrames() {
-        return averageThrownFrames;
+    public int getThrownFrames() {
+        return thrownFrames;
     }
 
-    public void setAverageThrownFrames(int averageThrownFrames) {
-        this.averageThrownFrames = averageThrownFrames;
+    public void setThrownFrames(int thrownFrames) {
+        this.thrownFrames = thrownFrames;
     }
 
     public int getMatchesPlayed() {

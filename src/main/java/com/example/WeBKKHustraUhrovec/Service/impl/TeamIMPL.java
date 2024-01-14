@@ -33,7 +33,11 @@ public class TeamIMPL implements TeamService {
 
     @Override
     public List<Team> getAllTeams() {
-        return teamRepo.findAll();
+        List<Team> teams = teamRepo.findAll();
+
+        teams.sort((team1, team2) -> Integer.compare(team2.getPoints(), team1.getPoints()));
+
+        return teams;
     }
 
     @Override
@@ -53,7 +57,7 @@ public class TeamIMPL implements TeamService {
         if (teamN != null) {
             teamN.setTeamName(team.getTeamName());
             teamN.setPoints(team.getPoints());
-            teamN.setAverageThrownFrames(team.getAverageThrownFrames());
+            teamN.setThrownFrames(team.getThrownFrames());
             teamN.setMatchesWon(team.getMatchesWon());
             teamN.setMatchesLost(team.getMatchesLost());
             teamN.setMatchesDraw(team.getMatchesDraw());

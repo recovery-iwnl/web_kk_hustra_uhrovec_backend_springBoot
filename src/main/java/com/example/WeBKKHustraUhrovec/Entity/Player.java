@@ -16,12 +16,12 @@ public class Player {
 
     @Column(name = "player_name", length = 255)
     @NotEmpty(message = "Name must not be empty")
-    @Pattern(regexp = "^[a-zA-ZščťžýáíéúäôöüěřščřžýáíéúäôöüěřščřžľďťňĺŕŠČŤŽÝÁÍÉÚÄÔÖÜĚŘŠČŘŽĹĽ]+$", message = "Name can only contain letters and special characters")
+    @Pattern(regexp = "^[a-zA-ZščťžýáíéúäôöüěřščřžýáíéúäôóöüěřščřžľďťňĺŕŠČŤŽÝÁÍÉÚÄÔÓÖÜĚŘŠČŘŽĹĽ]+$", message = "Name can only contain letters and special characters")
     private String name;
 
     @Column(name = "player_surname", length = 255)
     @NotEmpty(message = "Surname must not be empty")
-    @Pattern(regexp = "^[a-zA-ZščťžýáíéúäôöüěřščřžýáíéúäôöüěřščřžľďťňĺŕŠČŤŽÝÁÍÉÚÄÔÖÜĚŘŠČŘŽĹĽ]+$", message = "Surname can only contain letters and special characters")
+    @Pattern(regexp = "^[a-zA-ZščťžýáíéúäôöüěřščřžýáíéúäôóöüěřščřžľďťňĺŕŠČŤŽÝÁÍÉÚÄÔÓÖÜĚŘŠČŘŽĹĽ]+$", message = "Surname can only contain letters and special characters")
     private String surname;
 
     @Column(name = "player_age", length = 255)
