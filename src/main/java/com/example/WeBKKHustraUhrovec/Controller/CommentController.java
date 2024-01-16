@@ -21,8 +21,8 @@ public class CommentController {
     }
 
     @GetMapping(path = "/getCommentsList")
-    public List<Comment> getComments() {
-        return commentService.getComments();
+    public List<Comment> getComments(@RequestParam Integer number) {
+        return commentService.getComments(number);
     }
 
     @PutMapping(path = "/likeComment")

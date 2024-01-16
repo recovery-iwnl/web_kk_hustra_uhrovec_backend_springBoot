@@ -13,4 +13,6 @@ import java.util.List;
 public interface CommentRepo extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByOrderByDateDesc();
+    List<Comment> findAllByOrderByLikesDesc();
+    List<Comment> findAllByOrderByDateAsc();
 }

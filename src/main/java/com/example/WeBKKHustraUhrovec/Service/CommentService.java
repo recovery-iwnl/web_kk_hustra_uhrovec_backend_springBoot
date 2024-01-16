@@ -10,7 +10,7 @@ public interface CommentService {
 
     Comment addComment(String email, Comment comment);
 
-    List<Comment> getComments();
+    List<Comment> getComments(Integer number);
 
     String likeComment(Long id);
 

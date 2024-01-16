@@ -27,8 +27,14 @@ public class CommentIMPL implements CommentService {
     }
 
     @Override
-    public List<Comment> getComments() {
-        return commentRepo.findAllByOrderByDateDesc();
+    public List<Comment> getComments(Integer number) {
+        if (number == 1) {
+            return commentRepo.findAllByOrderByDateDesc();
+        } else if (number == 2) {
+            return commentRepo.findAllByOrderByDateAsc();
+        } else {
+            return commentRepo.findAllByOrderByLikesDesc();
+        }
     }
 
     @Override
