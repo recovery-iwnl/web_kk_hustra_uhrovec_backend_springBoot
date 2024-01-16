@@ -10,4 +10,5 @@ import java.util.List;
 @EnableJpaRepositories
 @Repository
 public interface ResultRepo extends JpaRepository<Result,Integer> {
+    List<Result> findAllByOrderByDateDesc();
 }

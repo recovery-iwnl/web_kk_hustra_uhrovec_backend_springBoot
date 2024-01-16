@@ -8,6 +8,8 @@ import com.example.WeBKKHustraUhrovec.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentIMPL implements CommentService {
 
@@ -22,5 +24,34 @@ public class CommentIMPL implements CommentService {
         User userN = userRepo.findByEmail(email);
         Comment comment1 = new Comment(comment.getText(), userN,0, comment.getDate());
         return commentRepo.save(comment1);
+    }
+
+    @Override
+    public List<Comment> getComments() {
+        return commentRepo.findAllByOrderByDateDesc();
+    }
+
+    @Override
+    public String likeComment(Long id) {
+        Comment commentN = commentRepo.findById(id).orElse(null);
+        if (commentN != null) {
+            commentN.setLikes(commentN.getLikes()+1);
+            commentRepo.save(commentN);
+            return "Comment liked:";
+        } else {
+            return "Comment doesnt exist!";
+        }
+
+    }
+
+    @Override
+    public String deleteComment(Long id) {
+        Comment comment = commentRepo.findById(id).orElse(null);
+        if (comment!=null) {
+            commentRepo.deleteById(id);
+            return "Comment deleted successfully";
+        } else {
+            return "Comment not found";
+        }
     }
 }

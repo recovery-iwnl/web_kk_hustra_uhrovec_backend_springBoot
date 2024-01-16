@@ -36,12 +36,12 @@ public class UpcomingMatchIMPL implements UpcomingMatchService {
 
     @Override
     public List<UpcomingMatch> getAllMatches() {
-        return upcomingMatchRepo.findAll();
+        return upcomingMatchRepo.findAllByOrderByDateDesc();
     }
 
     @Override
     public List<UpcomingMatch> getMatchesUhrovec() {
-        List<UpcomingMatch> matches = upcomingMatchRepo.findAll();
+        List<UpcomingMatch> matches = upcomingMatchRepo.findAllByOrderByDateDesc();
         List<UpcomingMatch> filtered = new ArrayList<>();
 
         for (UpcomingMatch m: matches) {

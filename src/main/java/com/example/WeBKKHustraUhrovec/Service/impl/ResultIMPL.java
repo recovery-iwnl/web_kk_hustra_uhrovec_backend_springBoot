@@ -187,12 +187,12 @@ public class ResultIMPL implements ResultService {
 
     @Override
     public List<Result> getAllResults() {
-        return resultRepo.findAll();
+        return resultRepo.findAllByOrderByDateDesc();
     }
 
     @Override
     public List<Result> getResultsUhrovec() {
-        List<Result> results = resultRepo.findAll();
+        List<Result> results = resultRepo.findAllByOrderByDateDesc();
         List<Result> filtered = new ArrayList<>();
 
         for (Result r: results) {
