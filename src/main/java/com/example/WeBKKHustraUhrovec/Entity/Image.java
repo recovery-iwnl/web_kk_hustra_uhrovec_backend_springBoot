@@ -3,16 +3,23 @@ package com.example.WeBKKHustraUhrovec.Entity;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotEmpty;
+
 @Entity
 @Table(name="image")
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", length = 40)
     private Long id;
 
+    @Column(name = "url", length = 255)
+    @NotEmpty(message = "Url must not be empty")
     private String url;
 
+    @Column(name = "name", length = 255)
+    @NotEmpty(message = "Name must not be empty")
     private String name;
 
     public Image(String url, String name) {

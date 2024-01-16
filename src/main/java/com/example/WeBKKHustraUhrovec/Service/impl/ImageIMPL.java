@@ -27,6 +27,7 @@ public class ImageIMPL implements ImageService {
 
     @Autowired
     private ImageRepo imageRepo;
+
     @Value("${file.upload.path}")
     private String fileUploadPath;
 
