@@ -85,4 +85,22 @@ public class ImageIMPL implements ImageService {
             throw new RuntimeException("Failed to load image", e);
         }
     }
+
+    @Transactional
+    @Override
+    public void deleteImage(Long id) {
+        // Find the image by ID
+        Image image = imageRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Image not found with id: " + id));
+
+        // Delete the image file
+        try {
+            Files.delete(Paths.get(image.getUrl()));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete image file", e);
+        }
+
+        // Delete the image entity from the database
+        imageRepo.deleteById(id);
+    }
 }

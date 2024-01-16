@@ -16,4 +16,6 @@ public interface ImageService {
 
     byte[] getImage(String imageName);
 
+    void deleteImage(Long id);
+
 }

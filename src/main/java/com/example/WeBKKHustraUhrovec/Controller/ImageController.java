@@ -47,4 +47,10 @@ public class ImageController {
                 .contentLength(imageBytes.length)
                 .body(resource);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteImage(@PathVariable Long id) {
+        imageService.deleteImage(id);
+        return ResponseEntity.ok("Image deleted successfully");
+    }
 }
