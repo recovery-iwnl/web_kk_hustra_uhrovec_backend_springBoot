@@ -10,5 +10,5 @@ import java.util.List;
 @EnableJpaRepositories
 @Repository
 public interface UpcomingMatchRepo extends JpaRepository<UpcomingMatch,Integer> {
-    List<UpcomingMatch> findAllByOrderByDateDesc();
+    List<UpcomingMatch> findAllByOrderByDateAsc();
 }
