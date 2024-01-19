@@ -11,6 +11,8 @@ public interface PlayerService {
 
     Player addPlayer(String id, Player player);
 
+    Player addPlayerUhrovec(Player player);
+
     Optional<Player> getPlayer(String id);
 
     List<Player> getAllPlayers();

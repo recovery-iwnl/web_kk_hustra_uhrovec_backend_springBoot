@@ -49,6 +49,11 @@ public class TeamController {
         return teamService.getPlayers(id);
     }
 
+    @GetMapping(path = "/playersUhrovec")
+    public List<Player> getPlayersByTeam() {
+        return teamService.getPlayersUhrovec();
+    }
+
 
 
 

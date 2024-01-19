@@ -20,4 +20,5 @@ public interface TeamService {
     Team updateTeam(Team team);
 
     List<Player> getPlayers(String id);
+    List<Player> getPlayersUhrovec();
 }

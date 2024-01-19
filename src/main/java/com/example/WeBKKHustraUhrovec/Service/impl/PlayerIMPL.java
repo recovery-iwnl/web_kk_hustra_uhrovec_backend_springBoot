@@ -27,6 +27,13 @@ public class PlayerIMPL implements PlayerService {
     }
 
     @Override
+    public Player addPlayerUhrovec(Player player) {
+        Team teamO = teamRepo.findTeamByTeamName("KK Hustra Uhrovec").orElse(null);
+        player.setTeam(teamO);
+        return playerRepo.save(player);
+    }
+
+    @Override
     public Optional<Player> getPlayer(String id) {
         return playerRepo.findById(Integer.valueOf(id));
     }

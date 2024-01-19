@@ -73,4 +73,10 @@ public class TeamIMPL implements TeamService {
         Optional<Team> teamOptional = teamRepo.findById(Integer.valueOf(teamId));
         return teamOptional.map(Team::getPlayers).orElse(null);
     }
+
+    @Override
+    public List<Player> getPlayersUhrovec() {
+        Optional<Team> teamOptional = teamRepo.findTeamByTeamName("KK Hustra Uhrovec");
+        return teamOptional.map(Team::getPlayers).orElse(null);
+    }
 }
