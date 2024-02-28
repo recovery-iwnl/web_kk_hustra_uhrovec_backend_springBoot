@@ -26,6 +26,13 @@ public class Result {
     private LocalDate date;
 
     @ManyToOne
+    @JoinColumn(name = "year_id")
+    @Getter
+    @Setter
+    private LeagueYear leagueYear;
+
+
+    @ManyToOne
     @JoinColumn(name = "team_home_id")
     @Getter
     @Setter
@@ -268,7 +275,7 @@ public class Result {
     @Setter
     private double team2PointsOverall;
 
-    public Result(LocalDate date, Team teamHome, Team teamAway, Player player1Home, Player player2Home, Player player3Home, Player player4Home, Player player5Home, Player player6Home, int player1ScoreHome, double player1PointsHome, int player2ScoreHome, double player2PointsHome, int player3ScoreHome, double player3PointsHome, int player4ScoreHome, double player4PointsHome, int player5ScoreHome, double player5PointsHome, int player6ScoreHome, double player6PointsHome, Player player1Away, Player player2Away, Player player3Away, Player player4Away, Player player5Away, Player player6Away, int player1ScoreAway, double player1PointsAway, int player2ScoreAway, double player2PointsAway, int player3ScoreAway, double player3PointsAway, int player4ScoreAway, double player4PointsAway, int player5ScoreAway, double player5PointsAway, int player6ScoreAway, double player6PointsAway, int team1ScoreOverall, int team2ScoreOverall, double team1PointsOverall, double team2PointsOverall) {
+    public Result(LocalDate date, LeagueYear leagueYear, Team teamHome, Team teamAway, Player player1Home, Player player2Home, Player player3Home, Player player4Home, Player player5Home, Player player6Home, int player1ScoreHome, double player1PointsHome, int player2ScoreHome, double player2PointsHome, int player3ScoreHome, double player3PointsHome, int player4ScoreHome, double player4PointsHome, int player5ScoreHome, double player5PointsHome, int player6ScoreHome, double player6PointsHome, Player player1Away, Player player2Away, Player player3Away, Player player4Away, Player player5Away, Player player6Away, int player1ScoreAway, double player1PointsAway, int player2ScoreAway, double player2PointsAway, int player3ScoreAway, double player3PointsAway, int player4ScoreAway, double player4PointsAway, int player5ScoreAway, double player5PointsAway, int player6ScoreAway, double player6PointsAway, int team1ScoreOverall, int team2ScoreOverall, double team1PointsOverall, double team2PointsOverall) {
         this.teamHome = teamHome;
         this.teamAway = teamAway;
 
@@ -318,6 +325,7 @@ public class Result {
         this.team2PointsOverall = team2PointsOverall;
 
         this.date = date;
+        this.leagueYear = leagueYear;
     }
     public Result() {
     }
