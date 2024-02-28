@@ -28,49 +28,20 @@ public class Player {
     @Positive(message = "Age must be greater than 0")
     private int age;
 
-    @Column(name = "player_points", length = 255)
-    @PositiveOrZero(message = "Points must be greater than or equal to 0")
-    private int points;
-
-    @Column(name = "matches_played", length = 255)
-    @PositiveOrZero(message = "Matches played must be greater than or equal to 0")
-    private int matchesPlayed;
-    @Column(name = "players_best", length = 255)
-    @PositiveOrZero(message = "Players best must be greater than or equal to 0")
-    private int playersBest;
-
     @ManyToOne()
     @JoinColumn(name = "team_id")
     @JsonBackReference
     private Team team;
 
-    public Player(String name, String surname, int age, int points, int matchesPlayed, int playersBest) {
+    public Player(int playerID, String name, String surname, int age, Team team) {
+        this.playerID = playerID;
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.points = points;
-        this.matchesPlayed = matchesPlayed;
-        this.playersBest = playersBest;
+        this.team = team;
     }
 
     public Player() {
-
-    }
-
-    public int getPlayersBest() {
-        return playersBest;
-    }
-
-    public void setPlayersBest(int playersBest) {
-        this.playersBest = playersBest;
-    }
-
-    public int getMatchesPlayed() {
-        return matchesPlayed;
-    }
-
-    public void setMatchesPlayed(int matchesPlayed) {
-        this.matchesPlayed = matchesPlayed;
     }
 
     public int getPlayerID() {
@@ -103,14 +74,6 @@ public class Player {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public Team getTeam() {

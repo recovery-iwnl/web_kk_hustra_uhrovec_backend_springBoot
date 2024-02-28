@@ -2,7 +2,6 @@ package com.example.WeBKKHustraUhrovec.Controller;
 
 import com.example.WeBKKHustraUhrovec.Entity.Result;
 import com.example.WeBKKHustraUhrovec.Service.ResultService;
-import com.example.WeBKKHustraUhrovec.Service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,10 +61,6 @@ public class ResultController {
     @DeleteMapping(path = "/deleteResult")
     public String deleteResult(@RequestParam Integer id) {
         return resultService.deleteResult(id);
-    }
-    @PutMapping(path = "/updateResult")
-    public Result updateResult(@RequestBody Result result) {
-        return resultService.updateResult(result);
     }
 
 }

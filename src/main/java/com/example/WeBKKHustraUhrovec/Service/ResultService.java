@@ -24,6 +24,4 @@ public interface ResultService {
     List<Result> getResultsUhrovec();
 
     String deleteResult(Integer id);
-
-    Result updateResult(Result result);
 }

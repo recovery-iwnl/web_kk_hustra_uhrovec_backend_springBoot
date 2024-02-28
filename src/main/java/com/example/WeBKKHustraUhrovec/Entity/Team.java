@@ -26,33 +26,10 @@ public class Team {
     private List<Player> players = new ArrayList<>();
 
 
-    @Column(name = "points")
-    private int points;
-
-    @Column(name = "thrown_frames")
-    private int thrownFrames;
-
-    @Column(name = "matches_played")
-    private int matchesPlayed;
-
-    @Column(name = "matches_won")
-    private int matchesWon;
-
-    @Column(name = "matches_lost")
-    private int matchesLost;
-
-    @Column(name = "matches_draw")
-    private int matchesDraw;
-
-    public Team(String teamName, int points, int thrownFrames,
-                int matchesPlayed, int matchesWon, int matchesLost, int matchesDraw) {
+    public Team(int teamId, String teamName, List<Player> players) {
+        this.teamId = teamId;
         this.teamName = teamName;
-        this.points = points;
-        this.thrownFrames = thrownFrames;
-        this.matchesPlayed = matchesPlayed;
-        this.matchesWon = matchesWon;
-        this.matchesLost = matchesLost;
-        this.matchesDraw = matchesDraw;
+        this.players = players;
     }
 
     public Team() {
@@ -80,53 +57,5 @@ public class Team {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public int getThrownFrames() {
-        return thrownFrames;
-    }
-
-    public void setThrownFrames(int thrownFrames) {
-        this.thrownFrames = thrownFrames;
-    }
-
-    public int getMatchesPlayed() {
-        return matchesPlayed;
-    }
-
-    public void setMatchesPlayed(int matchesPlayed) {
-        this.matchesPlayed = matchesPlayed;
-    }
-
-    public int getMatchesWon() {
-        return matchesWon;
-    }
-
-    public void setMatchesWon(int matchesWon) {
-        this.matchesWon = matchesWon;
-    }
-
-    public int getMatchesLost() {
-        return matchesLost;
-    }
-
-    public void setMatchesLost(int matchesLost) {
-        this.matchesLost = matchesLost;
-    }
-
-    public int getMatchesDraw() {
-        return matchesDraw;
-    }
-
-    public void setMatchesDraw(int matchesDraw) {
-        this.matchesDraw = matchesDraw;
     }
 }

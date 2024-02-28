@@ -5,6 +5,7 @@ import com.example.WeBKKHustraUhrovec.Entity.Team;
 import com.example.WeBKKHustraUhrovec.Repo.PlayerRepo;
 import com.example.WeBKKHustraUhrovec.Repo.TeamRepo;
 import com.example.WeBKKHustraUhrovec.Service.TeamService;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,7 @@ public class TeamIMPL implements TeamService {
 
     @Override
     public Team addTeam(Team team) {
-        Team teamN = new Team(team.getTeamName(),0,0,0,0,0,0);
-        return teamRepo.save(teamN);
+        return teamRepo.save(team);
     }
 
     @Override
@@ -34,9 +34,6 @@ public class TeamIMPL implements TeamService {
     @Override
     public List<Team> getAllTeams() {
         List<Team> teams = teamRepo.findAll();
-
-        teams.sort((team1, team2) -> Integer.compare(team2.getPoints(), team1.getPoints()));
-
         return teams;
     }
 
@@ -56,12 +53,6 @@ public class TeamIMPL implements TeamService {
         Team teamN = teamRepo.findById(team.getTeamId()).orElse(null);
         if (teamN != null) {
             teamN.setTeamName(team.getTeamName());
-            teamN.setPoints(team.getPoints());
-            teamN.setThrownFrames(team.getThrownFrames());
-            teamN.setMatchesWon(team.getMatchesWon());
-            teamN.setMatchesLost(team.getMatchesLost());
-            teamN.setMatchesDraw(team.getMatchesDraw());
-            teamN.setMatchesPlayed(team.getMatchesPlayed());
             return teamRepo.save(teamN);
         } else {
             return null;

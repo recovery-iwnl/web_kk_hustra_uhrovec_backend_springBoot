@@ -62,9 +62,6 @@ public class PlayerIMPL implements PlayerService {
             playerN.setName(player.getName());
             playerN.setSurname(player.getSurname());
             playerN.setAge(player.getAge());
-            playerN.setPoints(player.getPoints());
-            playerN.setPlayersBest(player.getPlayersBest());
-            playerN.setMatchesPlayed(player.getMatchesPlayed());
             playerN.setTeam(teamN);
             return playerRepo.save(playerN);
         } else {
