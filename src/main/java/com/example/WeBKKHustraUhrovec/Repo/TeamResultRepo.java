@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.Repo;
 
+import com.example.WeBKKHustraUhrovec.Entity.LeagueYear;
 import com.example.WeBKKHustraUhrovec.Entity.Player;
 import com.example.WeBKKHustraUhrovec.Entity.Team;
 import com.example.WeBKKHustraUhrovec.Entity.TeamResult;
@@ -12,13 +13,15 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 @Repository
 public interface TeamResultRepo extends JpaRepository<TeamResult,Integer> {
-    long countByTeam(Team team);
 
-    int countByTeamAndMatchResult(Team team, String matchResult);
+    long countByTeamAndResult_LeagueYear(Team team, LeagueYear leagueYear);
+
+    @Query("SELECT COUNT(tr) FROM TeamResult tr WHERE tr.team = :team AND tr.matchResult = :matchResult AND tr.result.leagueYear = :leagueYear")
+    int countByTeamAndMatchResultAndResult_LeagueYear(Team team, String matchResult, LeagueYear leagueYear);
 
     void deleteByResult_ResultId(int resultId);
 
-    @Query("SELECT SUM(tr.score) FROM TeamResult tr WHERE tr.team = :team")
-    Double sumScoreByTeam(@Param("team") Team team);
+    @Query("SELECT SUM(tr.score) FROM TeamResult tr WHERE tr.team = :team AND tr.result.leagueYear = :leagueYear")
+    Double sumScoreByTeamAndResult_LeagueYear(@Param("team") Team team, @Param("leagueYear") LeagueYear leagueYear);
 
 }

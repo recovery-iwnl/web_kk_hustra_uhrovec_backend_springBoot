@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.Service.impl;
 
+import com.example.WeBKKHustraUhrovec.Entity.LeagueYear;
 import com.example.WeBKKHustraUhrovec.Entity.Player;
 import com.example.WeBKKHustraUhrovec.Entity.PlayerResult;
 import com.example.WeBKKHustraUhrovec.Entity.Result;
@@ -19,6 +20,9 @@ public class PlayerResultIMPL implements PlayerResultService {
     @Autowired
     private ResultRepo resultRepo;
 
+    @Autowired
+    private LeagueYearRepo leagueYearRepo;
+
 
     @Override
     public PlayerResult addPlayerResult(String playerId, String resultId, int score, String matchResult) {
@@ -35,20 +39,23 @@ public class PlayerResultIMPL implements PlayerResultService {
     }
 
     @Override
-    public long getMatchesPlayed(String playerId) {
+    public long getMatchesPlayed(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            return playerResultRepo.countByPlayer(player);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+        if (player != null && leagueYear != null) {
+            return playerResultRepo.countByPlayerAndResult_LeagueYear(player, leagueYear);
         }
         return 0;
     }
 
     @Override
-    public double getAverageScore(String playerId) {
+    public double getAverageScore(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            Double totalScore = playerResultRepo.sumScoreByPlayer(player);
-            Long matchesPlayed = playerResultRepo.countByPlayer(player);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (player != null && leagueYear != null) {
+            Double totalScore = playerResultRepo.sumScoreByPlayerAndResult_LeagueYear(player, leagueYear);;
+            Long matchesPlayed = playerResultRepo.countByPlayerAndResult_LeagueYear(player, leagueYear);;
 
             if (totalScore != null && matchesPlayed != null && matchesPlayed != 0) {
                 return totalScore / matchesPlayed;
@@ -58,10 +65,12 @@ public class PlayerResultIMPL implements PlayerResultService {
     }
 
     @Override
-    public int getPlayersBest(String playerId) {
+    public int getPlayersBest(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            Integer maxScore = playerResultRepo.findMaxScoreByPlayer(player);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (player != null && leagueYear != null) {
+            Integer maxScore = playerResultRepo.findMaxScoreByPlayerAndResult_LeagueYear(player, leagueYear);
             return maxScore != null ? maxScore : 0;
         }
         return 0;

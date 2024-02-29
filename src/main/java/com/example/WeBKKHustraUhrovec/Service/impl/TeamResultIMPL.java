@@ -1,10 +1,8 @@
 package com.example.WeBKKHustraUhrovec.Service.impl;
 
 
-import com.example.WeBKKHustraUhrovec.Entity.Player;
-import com.example.WeBKKHustraUhrovec.Entity.Result;
-import com.example.WeBKKHustraUhrovec.Entity.Team;
-import com.example.WeBKKHustraUhrovec.Entity.TeamResult;
+import com.example.WeBKKHustraUhrovec.Entity.*;
+import com.example.WeBKKHustraUhrovec.Repo.LeagueYearRepo;
 import com.example.WeBKKHustraUhrovec.Repo.ResultRepo;
 import com.example.WeBKKHustraUhrovec.Repo.TeamRepo;
 import com.example.WeBKKHustraUhrovec.Repo.TeamResultRepo;
@@ -24,6 +22,9 @@ public class TeamResultIMPL implements TeamResultService {
     @Autowired
     private ResultRepo resultRepo;
 
+    @Autowired
+    private LeagueYearRepo leagueYearRepo;
+
 
     @Override
     public TeamResult addTeamResult(String teamId, String resultId, int score, String matchResult) {
@@ -40,48 +41,57 @@ public class TeamResultIMPL implements TeamResultService {
     }
 
     @Override
-    public long getMatchesPlayed(String teamId) {
+    public long getMatchesPlayed(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
-            return teamResultRepo.countByTeam(team);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (team != null && leagueYear != null) {
+            return teamResultRepo.countByTeamAndResult_LeagueYear(team, leagueYear);
         }
         return 0;
     }
 
     @Override
-    public int getMatchesWon(String teamId) {
+    public int getMatchesWon(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
-            return teamResultRepo.countByTeamAndMatchResult(team, "WIN");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (team != null && leagueYear != null) {
+            return teamResultRepo.countByTeamAndMatchResultAndResult_LeagueYear(team, "WIN", leagueYear);
         }
         return 0;
     }
 
     @Override
-    public int getMatchesLost(String teamId) {
+    public int getMatchesLost(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
-            return teamResultRepo.countByTeamAndMatchResult(team, "LOSS");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (team != null && leagueYear != null) {
+            return teamResultRepo.countByTeamAndMatchResultAndResult_LeagueYear(team, "LOSS", leagueYear);
         }
         return 0;
     }
 
     @Override
-    public int getMatchesDrawn(String teamId) {
+    public int getMatchesDrawn(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
-            return teamResultRepo.countByTeamAndMatchResult(team, "DRAW");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (team != null && leagueYear != null) {
+            return teamResultRepo.countByTeamAndMatchResultAndResult_LeagueYear(team, "DRAW", leagueYear);
         }
         return 0;
     }
 
     @Override
-    public double getAverageScore(String teamId) {
+    public double getAverageScore(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
 
-            Double totalScore = teamResultRepo.sumScoreByTeam(team);
-            Long matchesPlayed = teamResultRepo.countByTeam(team);
+        if (team != null && leagueYear != null) {
+            Double totalScore = teamResultRepo.sumScoreByTeamAndResult_LeagueYear(team, leagueYear);
+            Long matchesPlayed = teamResultRepo.countByTeamAndResult_LeagueYear(team, leagueYear);
 
             if (totalScore != null && matchesPlayed != null && matchesPlayed != 0) {
                 return totalScore / matchesPlayed;
@@ -91,11 +101,13 @@ public class TeamResultIMPL implements TeamResultService {
     }
 
     @Override
-    public int getPoints(String teamId) {
+    public int getPoints(String teamId, String leagueYearId) {
         Team team = teamRepo.findById(Integer.valueOf(teamId)).orElse(null);
-        if (team != null) {
-            int matchesWon = getMatchesWon(teamId);
-            int matchesDrawn = getMatchesDrawn(teamId);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (team != null && leagueYear != null) {
+            int matchesWon = getMatchesWon(teamId, leagueYearId);
+            int matchesDrawn = getMatchesDrawn(teamId, leagueYearId);
             return (matchesWon * 2) + matchesDrawn;
         }
         return 0;

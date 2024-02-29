@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.Service;
 
+
 import com.example.WeBKKHustraUhrovec.Entity.TeamResult;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +8,11 @@ import org.springframework.stereotype.Service;
 public interface TeamResultService {
 
     TeamResult addTeamResult(String teamId, String resultId, int score, String matchResult );
-    long getMatchesPlayed(String teamId);
-    int getMatchesWon(String teamId);
-    int getMatchesLost(String teamId);
-    int getMatchesDrawn(String teamId);
-    double getAverageScore(String teamId);
-    int getPoints(String teamId);
+    long getMatchesPlayed(String teamId, String leagueYearId);
+    int getMatchesWon(String teamId, String leagueYearId);
+    int getMatchesLost(String teamId, String leagueYearId);
+    int getMatchesDrawn(String teamId, String leagueYearId);
+    double getAverageScore(String teamId, String leagueYearId);
+    int getPoints(String teamId, String leagueYearId);
     void deleteTeamResultsByResultId(int resultId);
 }

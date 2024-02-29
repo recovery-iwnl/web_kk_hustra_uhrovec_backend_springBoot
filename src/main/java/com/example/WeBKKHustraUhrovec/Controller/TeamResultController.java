@@ -14,32 +14,32 @@ public class TeamResultController {
     private TeamResultService teamResultService;
 
     @GetMapping(path = "/getMatchesPlayed")
-    public Long getMatchesPlayed(@RequestParam String id) {
-        return teamResultService.getMatchesPlayed(id);
+    public Long getMatchesPlayed(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getMatchesPlayed(id, leagueYearId);
     }
 
     @GetMapping(path = "/getMatchesWon")
-    public Integer getMatchesWon(@RequestParam String id) {
-        return teamResultService.getMatchesWon(id);
+    public Integer getMatchesWon(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getMatchesWon(id, leagueYearId);
     }
 
     @GetMapping(path = "/getMatchesLost")
-    public Integer getMatchesLost(@RequestParam String id) {
-        return teamResultService.getMatchesLost(id);
+    public Integer getMatchesLost(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getMatchesLost(id, leagueYearId);
     }
 
     @GetMapping(path = "/getMatchesDrawn")
-    public Integer getMatchesDrawn(@RequestParam String id) {
-        return teamResultService.getMatchesDrawn(id);
+    public Integer getMatchesDrawn(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getMatchesDrawn(id, leagueYearId);
     }
 
     @GetMapping(path = "/getAverage")
-    public Double getAverage(@RequestParam String id) {
-        return teamResultService.getAverageScore(id);
+    public Double getAverage(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getAverageScore(id, leagueYearId);
     }
 
     @GetMapping(path = "/getPoints")
-    public Integer getPoints(@RequestParam String id) {
-        return teamResultService.getPoints(id);
+    public Integer getPoints(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return teamResultService.getPoints(id, leagueYearId);
     }
 }
