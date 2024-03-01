@@ -13,6 +13,8 @@ public interface TeamService {
 
     Optional<Team> getTeam(String id);
 
+    Optional<Team> getTeamByName(String name);
+
     List<Team> getAllTeams();
 
     String deleteTeam(Integer id);

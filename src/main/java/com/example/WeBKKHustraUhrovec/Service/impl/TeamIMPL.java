@@ -32,6 +32,11 @@ public class TeamIMPL implements TeamService {
     }
 
     @Override
+    public Optional<Team> getTeamByName(String name) {
+        return teamRepo.findTeamByTeamName(name);
+    }
+
+    @Override
     public List<Team> getAllTeams() {
         List<Team> teams = teamRepo.findAll();
         return teams;
@@ -70,4 +75,6 @@ public class TeamIMPL implements TeamService {
         Optional<Team> teamOptional = teamRepo.findTeamByTeamName("KK Hustra Uhrovec");
         return teamOptional.map(Team::getPlayers).orElse(null);
     }
+
+
 }

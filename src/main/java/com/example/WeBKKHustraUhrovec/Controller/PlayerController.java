@@ -29,6 +29,22 @@ public class PlayerController {
     public Optional<Player> getPlayer(@RequestParam String id) {
         return playerService.getPlayer(id);
     }
+
+    @GetMapping(path = "/getPlayerByName")
+    public Optional<Player> getPlayerByName(@RequestParam String name, @RequestParam String surname) {
+        return playerService.getPlayerByName(name, surname);
+    }
+
+    @GetMapping(path = "/getTeamNameByPlayer")
+    public Optional<String> getTeamNameByPlayer(@RequestParam int id) {
+        return playerService.getTeamNameByPlayer(id);
+    }
+
+    @GetMapping(path = "/getAge")
+    public String getAge(@RequestParam String id) {
+        return playerService.getAge(id);
+    }
+
     @GetMapping(path = "/getPlayersList")
     public List<Player> getAllPlayers() {return playerService.getAllPlayers();}
     @DeleteMapping(path = "/deletePlayer")

@@ -30,6 +30,11 @@ public class TeamController {
         return teamService.getTeam(id);
     }
 
+    @GetMapping(path = "/getTeamByName")
+    public Optional<Team> getTeamByName(@RequestParam String name) {
+        return teamService.getTeamByName(name);
+    }
+
     @GetMapping(path = "/getTeamsList")
     public List<Team> getAllTeams() {
         return teamService.getAllTeams();

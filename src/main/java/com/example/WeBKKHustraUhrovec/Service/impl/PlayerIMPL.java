@@ -39,6 +39,23 @@ public class PlayerIMPL implements PlayerService {
     }
 
     @Override
+    public String getAge(String id) {
+        Player player = playerRepo.findById(Integer.valueOf(id)).orElse(null);
+        assert player != null;
+        return String.valueOf(player.getAge());
+    }
+
+    @Override
+    public Optional<Player> getPlayerByName(String name, String surname) {
+        return playerRepo.findPlayerByNameAndSurname(name, surname);
+    }
+
+    @Override
+    public Optional<String> getTeamNameByPlayer(int id) {
+        return playerRepo.findTeamNameByPlayerId(id);
+    }
+
+    @Override
     public List<Player> getAllPlayers() {
         return playerRepo.findAll();
     }
