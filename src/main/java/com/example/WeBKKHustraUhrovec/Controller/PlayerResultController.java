@@ -18,9 +18,29 @@ public class PlayerResultController {
         return playerResultService.getMatchesPlayed(id, leagueYearId);
     }
 
+    @GetMapping(path = "/getDuelsWon")
+    public Long getDuelsWon(@RequestParam String id) {
+        return playerResultService.getMatchesWon(id);
+    }
+
+    @GetMapping(path = "/getDuelsDrawn")
+    public Long getDuelsDrawn(@RequestParam String id) {
+        return playerResultService.getMatchesDrawn(id);
+    }
+
+    @GetMapping(path = "/getDuelsLost")
+    public Long getDuelsLost(@RequestParam String id) {
+        return playerResultService.getMatchesLost(id);
+    }
+
     @GetMapping(path = "/getPlayersBest")
     public Integer getPlayersBest(@RequestParam String id, @RequestParam String leagueYearId ) {
         return playerResultService.getPlayersBest(id, leagueYearId);
+    }
+
+    @GetMapping(path = "/getPlayersWorst")
+    public Integer getPlayersWorst(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return playerResultService.getPlayersWorst(id, leagueYearId);
     }
 
     @GetMapping(path = "/getAverage")

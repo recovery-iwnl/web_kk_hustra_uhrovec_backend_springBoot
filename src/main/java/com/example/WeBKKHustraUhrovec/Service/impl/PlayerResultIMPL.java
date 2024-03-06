@@ -49,6 +49,33 @@ public class PlayerResultIMPL implements PlayerResultService {
     }
 
     @Override
+    public long getMatchesWon(String playerId) {
+        Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
+        if (player != null) {
+            return playerResultRepo.countByPlayerAndMatchResult(player, "WIN");
+        }
+        return 0;
+    }
+
+    @Override
+    public long getMatchesDrawn(String playerId) {
+        Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
+        if (player != null) {
+            return playerResultRepo.countByPlayerAndMatchResult(player, "DRAW");
+        }
+        return 0;
+    }
+
+    @Override
+    public long getMatchesLost(String playerId) {
+        Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
+        if (player != null) {
+            return playerResultRepo.countByPlayerAndMatchResult(player, "LOSS");
+        }
+        return 0;
+    }
+
+    @Override
     public double getAverageScore(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
         LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
@@ -72,6 +99,18 @@ public class PlayerResultIMPL implements PlayerResultService {
         if (player != null && leagueYear != null) {
             Integer maxScore = playerResultRepo.findMaxScoreByPlayerAndResult_LeagueYear(player, leagueYear);
             return maxScore != null ? maxScore : 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public int getPlayersWorst(String playerId, String leagueYearId) {
+        Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+
+        if (player != null && leagueYear != null) {
+            Integer minScore = playerResultRepo.findMinScoreByPlayerAndResult_LeagueYear(player, leagueYear);
+            return minScore != null ? minScore : 0;
         }
         return 0;
     }

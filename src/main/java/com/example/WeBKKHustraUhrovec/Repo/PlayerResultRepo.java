@@ -19,8 +19,13 @@ public interface PlayerResultRepo extends JpaRepository<PlayerResult,Integer> {
     @Query("SELECT MAX(pr.score) FROM PlayerResult pr WHERE pr.player = :player AND pr.result.leagueYear = :leagueYear")
     Integer findMaxScoreByPlayerAndResult_LeagueYear(@Param("player") Player player, @Param("leagueYear") LeagueYear leagueYear);
 
+    @Query("SELECT MIN(pr.score) FROM PlayerResult pr WHERE pr.player = :player AND pr.result.leagueYear = :leagueYear")
+    Integer findMinScoreByPlayerAndResult_LeagueYear(@Param("player") Player player, @Param("leagueYear") LeagueYear leagueYear);
+
     @Query("SELECT SUM(pr.score) FROM PlayerResult pr WHERE pr.player = :player AND pr.result.leagueYear = :leagueYear")
     Double sumScoreByPlayerAndResult_LeagueYear(@Param("player") Player player, @Param("leagueYear") LeagueYear leagueYear);
 
     long countByPlayerAndResult_LeagueYear(Player player, LeagueYear leagueYear);
+
+    long countByPlayerAndMatchResult(Player player, String matchDuelResult);
 }
