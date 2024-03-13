@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class ResultIMPL implements ResultService {
 
@@ -46,19 +47,19 @@ public class ResultIMPL implements ResultService {
 
         resultRepo.save(result);
 
-        if(result.getTeam1PointsOverall() > result.getTeam2PointsOverall()) {
+        if (result.getTeam1PointsOverall() > result.getTeam2PointsOverall()) {
             // Home Team Won
-            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()), result.getTeam1ScoreOverall(),"WIN");
-            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()),result.getTeam2ScoreOverall(),"LOSS");
+            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()), result.getTeam1ScoreOverall(), "WIN");
+            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()), result.getTeam2ScoreOverall(), "LOSS");
 
         } else if (result.getTeam1PointsOverall() < result.getTeam2PointsOverall()) {
             // Away Team Won
-            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()),result.getTeam2ScoreOverall(),"WIN");
-            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()),result.getTeam1ScoreOverall(),"LOSS");
+            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()), result.getTeam2ScoreOverall(), "WIN");
+            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()), result.getTeam1ScoreOverall(), "LOSS");
         } else {
             // Draw
-            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()),result.getTeam1ScoreOverall(),"DRAW");
-            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()),result.getTeam2ScoreOverall(),"DRAW");
+            teamResultService.addTeamResult(teamIdHome, String.valueOf(result.getResultId()), result.getTeam1ScoreOverall(), "DRAW");
+            teamResultService.addTeamResult(teamIdAway, String.valueOf(result.getResultId()), result.getTeam2ScoreOverall(), "DRAW");
         }
 
         for (int i = 1; i <= 6; i++) {
@@ -112,7 +113,6 @@ public class ResultIMPL implements ResultService {
     }
 
 
-
     private int getPlayerScoreHome(Result result, int playerNumber) {
         return switch (playerNumber) {
             case 1 -> result.getPlayer1ScoreHome();
@@ -124,6 +124,7 @@ public class ResultIMPL implements ResultService {
             default -> 0;
         };
     }
+
     private int getPlayerScoreAway(Result result, int playerNumber) {
         return switch (playerNumber) {
             case 1 -> result.getPlayer1ScoreAway();
@@ -135,6 +136,7 @@ public class ResultIMPL implements ResultService {
             default -> 0;
         };
     }
+
     private String getPlayerIdHome(Result result, int playerNumber) {
         return switch (playerNumber) {
             case 1 -> String.valueOf(result.getPlayer1Home().getPlayerID());
@@ -176,16 +178,9 @@ public class ResultIMPL implements ResultService {
     }
 
     @Override
-    public List<Result> getResultsUhrovec() {
-        List<Result> results = resultRepo.findAllByOrderByDateDesc();
-        List<Result> filtered = new ArrayList<>();
-
-        for (Result r: results) {
-            if (r.getTeamAway().getTeamName().equals("KK Hustra Uhrovec") || r.getTeamHome().getTeamName().equals("KK Hustra Uhrovec")) {
-                filtered.add(r);
-            }
-        }
-        return filtered;
+    public List<Result> getResultsUhrovecByLeagueYear(String id) {
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(id)).orElse(null);
+        return resultRepo.findAllByLeagueYearAndTeamHome_TeamNameOrLeagueYearAndTeamAway_TeamNameOrderByDateDesc(leagueYear, "KK Hustra Uhrovec", leagueYear, "KK Hustra Uhrovec");
     }
 
     @Override

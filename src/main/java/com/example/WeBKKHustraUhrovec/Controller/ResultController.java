@@ -38,8 +38,8 @@ public class ResultController {
     }
 
     @GetMapping(path = "/getResultsUhrovecList")
-    public List<Result> getResultsUhrovec() {
-        return resultService.getResultsUhrovec();
+    public List<Result> getResultsUhrovec(@RequestParam String id) {
+        return resultService.getResultsUhrovecByLeagueYear(id);
     }
 
     @DeleteMapping(path = "/deleteResult")

@@ -14,4 +14,7 @@ public interface ResultRepo extends JpaRepository<Result,Integer> {
     List<Result> findAllByOrderByDateDesc();
 
     List<Result> findAllByLeagueYearOrderByDateDesc(LeagueYear leagueYear);
+
+    List<Result> findAllByLeagueYearAndTeamHome_TeamNameOrLeagueYearAndTeamAway_TeamNameOrderByDateDesc(LeagueYear leagueYear, String teamNameHome, LeagueYear leagueYear2, String teamNameAway);
+
 }

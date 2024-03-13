@@ -19,7 +19,7 @@ public interface ResultService {
 
     List<Result> getAllResults();
 
-    List<Result> getResultsUhrovec();
+    List<Result> getResultsUhrovecByLeagueYear(String id);
 
     String deleteResult(Integer id);
 }
