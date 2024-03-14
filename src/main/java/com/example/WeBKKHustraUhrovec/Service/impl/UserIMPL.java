@@ -4,10 +4,12 @@ import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
+import com.example.WeBKKHustraUhrovec.Repo.CommentRepo;
 import com.example.WeBKKHustraUhrovec.Repo.UserRepo;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class UserIMPL implements UserService {
 
     @Autowired
     private PasswordEncoder passwdEncoder;
+
+    @Autowired
+    private CommentRepo commentRepo;
 
     @Override
     public String addUser(UserDTO userDto) {
@@ -87,11 +92,13 @@ public class UserIMPL implements UserService {
     }
 
     @Override
+    @Transactional
     public String deleteUser(String email) {
         if (userRepo.findByEmail(email) == null) {
             return "User doesn't exist";
         } else {
             User user = userRepo.findByEmail(email);
+            commentRepo.deleteAllByUser(user);
             userRepo.deleteById(user.getUserID());
             return "User " + user.getUserName() + " was deleted.";
         }

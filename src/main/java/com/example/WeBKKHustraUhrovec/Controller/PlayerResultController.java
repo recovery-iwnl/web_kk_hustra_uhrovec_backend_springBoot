@@ -19,18 +19,18 @@ public class PlayerResultController {
     }
 
     @GetMapping(path = "/getDuelsWon")
-    public Long getDuelsWon(@RequestParam String id) {
-        return playerResultService.getMatchesWon(id);
+    public Long getDuelsWon(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return playerResultService.getMatchesWon(id, leagueYearId);
     }
 
     @GetMapping(path = "/getDuelsDrawn")
-    public Long getDuelsDrawn(@RequestParam String id) {
-        return playerResultService.getMatchesDrawn(id);
+    public Long getDuelsDrawn(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return playerResultService.getMatchesDrawn(id, leagueYearId);
     }
 
     @GetMapping(path = "/getDuelsLost")
-    public Long getDuelsLost(@RequestParam String id) {
-        return playerResultService.getMatchesLost(id);
+    public Long getDuelsLost(@RequestParam String id, @RequestParam String leagueYearId ) {
+        return playerResultService.getMatchesLost(id, leagueYearId);
     }
 
     @GetMapping(path = "/getPlayersBest")

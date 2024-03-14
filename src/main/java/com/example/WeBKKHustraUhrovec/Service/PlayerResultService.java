@@ -9,9 +9,9 @@ public interface PlayerResultService {
     PlayerResult addPlayerResult(String playerId, String resultId, int score, String matchResult );
 
     long getMatchesPlayed(String playerId, String leagueYearId);
-    long getMatchesWon(String playerId);
-    long getMatchesDrawn(String playerId);
-    long getMatchesLost(String playerId);
+    long getMatchesWon(String playerId, String leagueYearId);
+    long getMatchesDrawn(String playerId, String leagueYearId);
+    long getMatchesLost(String playerId, String leagueYearId);
 
     double getAverageScore(String playerId, String leagueYearId);
     int getPlayersBest(String playerId, String leagueYearId);

@@ -49,28 +49,31 @@ public class PlayerResultIMPL implements PlayerResultService {
     }
 
     @Override
-    public long getMatchesWon(String playerId) {
+    public long getMatchesWon(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            return playerResultRepo.countByPlayerAndMatchResult(player, "WIN");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+        if (player != null && leagueYear != null) {
+            return playerResultRepo.countByPlayerAndMatchResultAndResult_LeagueYear(player, "WIN",leagueYear);
         }
         return 0;
     }
 
     @Override
-    public long getMatchesDrawn(String playerId) {
+    public long getMatchesDrawn(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            return playerResultRepo.countByPlayerAndMatchResult(player, "DRAW");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+        if (player != null && leagueYear != null) {
+            return playerResultRepo.countByPlayerAndMatchResultAndResult_LeagueYear(player, "DRAW",leagueYear);
         }
         return 0;
     }
 
     @Override
-    public long getMatchesLost(String playerId) {
+    public long getMatchesLost(String playerId, String leagueYearId) {
         Player player = playerRepo.findById(Integer.valueOf(playerId)).orElse(null);
-        if (player != null) {
-            return playerResultRepo.countByPlayerAndMatchResult(player, "LOSS");
+        LeagueYear leagueYear = leagueYearRepo.findById(Integer.valueOf(leagueYearId)).orElse(null);
+        if (player != null && leagueYear != null) {
+            return playerResultRepo.countByPlayerAndMatchResultAndResult_LeagueYear(player, "LOSS",leagueYear);
         }
         return 0;
     }

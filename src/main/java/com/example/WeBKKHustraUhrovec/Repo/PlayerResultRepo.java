@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @EnableJpaRepositories
 @Repository
 public interface PlayerResultRepo extends JpaRepository<PlayerResult,Integer> {
@@ -28,4 +30,6 @@ public interface PlayerResultRepo extends JpaRepository<PlayerResult,Integer> {
     long countByPlayerAndResult_LeagueYear(Player player, LeagueYear leagueYear);
 
     long countByPlayerAndMatchResult(Player player, String matchDuelResult);
+
+    long countByPlayerAndMatchResultAndResult_LeagueYear(Player player, String win, LeagueYear leagueYear);
 }

@@ -10,9 +10,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @EnableJpaRepositories
 @Repository
-public interface TeamResultRepo extends JpaRepository<TeamResult,Integer> {
+public interface TeamResultRepo extends JpaRepository<TeamResult, Integer> {
 
     long countByTeamAndResult_LeagueYear(Team team, LeagueYear leagueYear);
 

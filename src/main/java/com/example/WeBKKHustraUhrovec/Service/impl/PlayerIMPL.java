@@ -1,15 +1,19 @@
 package com.example.WeBKKHustraUhrovec.Service.impl;
 
 import com.example.WeBKKHustraUhrovec.Entity.Player;
+import com.example.WeBKKHustraUhrovec.Entity.Result;
 import com.example.WeBKKHustraUhrovec.Entity.Team;
-import com.example.WeBKKHustraUhrovec.Repo.PlayerRepo;
-import com.example.WeBKKHustraUhrovec.Repo.TeamRepo;
+import com.example.WeBKKHustraUhrovec.Entity.TeamResult;
+import com.example.WeBKKHustraUhrovec.Repo.*;
 import com.example.WeBKKHustraUhrovec.Service.PlayerService;
+import com.example.WeBKKHustraUhrovec.Service.ResultService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class PlayerIMPL implements PlayerService {
 
@@ -18,6 +22,18 @@ public class PlayerIMPL implements PlayerService {
 
     @Autowired
     private TeamRepo teamRepo;
+
+    @Autowired
+    private ResultRepo resultRepo;
+
+    @Autowired
+    private TeamResultRepo teamResultRepo;
+
+    @Autowired
+    private PlayerResultRepo playerResultRepo;
+
+    @Autowired
+    private ResultService resultService;
 
     @Override
     public Player addPlayer(String id, Player player) {
@@ -61,13 +77,23 @@ public class PlayerIMPL implements PlayerService {
     }
 
     @Override
+    @Transactional
     public String deletePlayer(Integer id) {
         Player player = playerRepo.findById(id).orElse(null);
         if (player == null) {
             return "Player doesn't exist";
         } else {
-            playerRepo.deleteById(id);
-            return "Player " + player.getName() + " " + player.getSurname() + " was deleted";
+            try {
+                List<Result> results = resultRepo.findAllByPlayer1HomeOrPlayer2HomeOrPlayer3HomeOrPlayer4HomeOrPlayer5HomeOrPlayer6HomeOrPlayer1AwayOrPlayer2AwayOrPlayer3AwayOrPlayer4AwayOrPlayer5AwayOrPlayer6Away
+                        (player, player, player, player, player, player, player, player, player, player, player, player);
+                for (Result result : results) {
+                    resultService.deleteResult(result.getResultId());
+                }
+                playerRepo.delete(player);
+                return "Player " + player.getName() + " " + player.getSurname() + " was deleted";
+            } catch (Exception e) {
+                return "Failed to delete player: " + e.getMessage();
+            }
         }
     }
 
