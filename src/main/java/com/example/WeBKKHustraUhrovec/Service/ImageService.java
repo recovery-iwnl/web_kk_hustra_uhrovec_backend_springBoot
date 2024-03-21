@@ -12,6 +12,8 @@ public interface ImageService {
 
     Image addImage(MultipartFile file);
 
+    Image getImageByName(String imageName);
+
     List<Image> getAllImages();
 
     byte[] getImage(String imageName);

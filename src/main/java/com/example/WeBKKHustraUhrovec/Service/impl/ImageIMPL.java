@@ -63,6 +63,11 @@ public class ImageIMPL implements ImageService {
     }
 
     @Override
+    public Image getImageByName(String imageName) {
+        return imageRepo.findImageByName(imageName);
+    }
+
+    @Override
     public List<Image> getAllImages() {
         return imageRepo.findAll();
     }

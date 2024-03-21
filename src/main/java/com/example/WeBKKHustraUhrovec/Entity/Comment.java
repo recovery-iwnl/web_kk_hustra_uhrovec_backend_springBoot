@@ -18,11 +18,15 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "text")
     @NotEmpty(message = "Text must not be empty")
     @Size(max = 255, message = "Comment must have less than 255 characters")
     private String text;
+
+    @Column(name = "subject")
+    @NotEmpty(message = "Subject must not be empty")
+    @Size(max = 255, message = "Subject must have less than 255 characters")
+    private String subject;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,11 +40,20 @@ public class Comment {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime date;
 
-    public Comment(String text, User user, int likes, LocalDateTime date) {
+    public Comment(String text, String subject, User user, int likes, LocalDateTime date) {
         this.text = text;
+        this.subject = subject;
         this.user = user;
         this.likes = likes;
         this.date = date;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public Comment() {

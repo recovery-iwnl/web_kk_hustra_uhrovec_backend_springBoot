@@ -32,6 +32,12 @@ public class ImageController {
         return ResponseEntity.ok(allImages);
     }
 
+    @GetMapping("/getImageByName")
+    public ResponseEntity<Image> getImageByName(@RequestParam String name) {
+        Image image = imageService.getImageByName(name);
+        return ResponseEntity.ok(image);
+    }
+
     @GetMapping("/{imageName:.+}")
     public ResponseEntity<ByteArrayResource> serveImage(@PathVariable String imageName) throws IOException {
         byte[] imageBytes = imageService.getImage(imageName);

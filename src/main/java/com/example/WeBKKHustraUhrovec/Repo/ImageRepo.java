@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 @Repository
 public interface ImageRepo extends JpaRepository<Image, Long> {
+    Image findImageByName(String name);
 }

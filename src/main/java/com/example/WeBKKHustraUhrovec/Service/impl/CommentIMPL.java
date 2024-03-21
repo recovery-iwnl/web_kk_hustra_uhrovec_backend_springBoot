@@ -22,7 +22,7 @@ public class CommentIMPL implements CommentService {
     @Override
     public Comment addComment(String email, Comment comment) {
         User userN = userRepo.findByEmail(email);
-        Comment comment1 = new Comment(comment.getText(), userN,0, comment.getDate());
+        Comment comment1 = new Comment(comment.getText(), comment.getSubject(), userN,0, comment.getDate());
         return commentRepo.save(comment1);
     }
 
