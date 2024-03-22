@@ -16,7 +16,7 @@ public interface UserService {
 
     LoginResponse loginUser(LoginDTO loginDto);
 
-    User getUser(String email);
+    User getUserByToken(String token);
 
     String deleteUser(String email);
 

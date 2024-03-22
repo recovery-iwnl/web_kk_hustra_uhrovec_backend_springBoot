@@ -9,6 +9,8 @@ import com.example.WeBKKHustraUhrovec.Repo.UserRepo;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.exception.UserUpdateException;
+import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +30,9 @@ public class UserIMPL implements UserService {
 
     @Autowired
     private CommentRepo commentRepo;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public String addUser(UserDTO userDto) {
@@ -56,10 +61,9 @@ public class UserIMPL implements UserService {
         return user.getUserName();
     }
 
-    @Override
     public LoginResponse loginUser(LoginDTO loginDto) {
         if (loginDto.getPassword() == null || loginDto.getEmail() == null) {
-            return new LoginResponse("Wrong parameters", false);
+            return new LoginResponse("Wrong parameters", false, null);
         }
         User user = userRepo.findByEmail(loginDto.getEmail());
         if (user != null) {
@@ -68,21 +72,25 @@ public class UserIMPL implements UserService {
             if (passwdEncoder.matches(password, encodedPasswd)) {
                 Optional<User> userN = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPasswd);
                 if (userN.isPresent()) {
-                    return new LoginResponse("Login Successful", true);
+                    String token = jwtTokenUtil.generateToken(userN.get());
+                    return new LoginResponse("Login Successful", true, token);
                 } else {
-                    return new LoginResponse("Login Failed", false);
+                    return new LoginResponse("Login Failed", false, null);
                 }
             } else {
-                return new LoginResponse("Password Doesn't Match", false);
+                return new LoginResponse("Password Doesn't Match", false, null);
             }
 
         } else {
-            return new LoginResponse("Email Doesn't Exist", false);
+            return new LoginResponse("Email Doesn't Exist", false, null);
         }
     }
 
+
     @Override
-    public User getUser(String email) {
+    public User getUserByToken(String token) {
+        Claims claims = jwtTokenUtil.extractClaims(token);
+        String email = claims.getSubject();
         return userRepo.findByEmail(email);
     }
 

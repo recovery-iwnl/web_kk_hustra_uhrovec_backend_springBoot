@@ -5,12 +5,23 @@ public class LoginResponse {
     String message;
     Boolean status;
 
-    public LoginResponse(String message, Boolean status) {
+    private String token;
+
+    public LoginResponse(String message, Boolean status, String token) {
         this.message = message;
         this.status = status;
+        this.token = token;
     }
 
     public LoginResponse() {
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getMessage() {

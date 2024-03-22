@@ -35,9 +35,18 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @GetMapping(path = "/getUser")
-    public User getUser(@RequestParam String email) {
-        return userService.getUser(email);
+    @GetMapping(path = "/getUserDetails")
+    public ResponseEntity<User> getUserDetails(@RequestHeader("Authorization") String token) {
+
+        String jwtToken = token.substring(7);
+
+        User user = userService.getUserByToken(jwtToken);
+
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(path = "/getUsersList")
