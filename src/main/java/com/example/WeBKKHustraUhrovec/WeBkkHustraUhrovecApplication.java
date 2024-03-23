@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableWebMvc
-@CrossOrigin(origins = "http://localhost:4200")
 public class WeBkkHustraUhrovecApplication {
 
 	public static void main(String[] args) {

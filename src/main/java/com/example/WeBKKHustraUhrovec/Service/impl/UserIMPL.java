@@ -2,6 +2,7 @@ package com.example.WeBKKHustraUhrovec.Service.impl;
 
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
+import com.example.WeBKKHustraUhrovec.Dto.UserSafeDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Repo.CommentRepo;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,8 +97,17 @@ public class UserIMPL implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
+    public List<UserSafeDTO> getAllUsers() {
+        List<User> users = userRepo.findAll();
+        List<UserSafeDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            UserSafeDTO userSafeDTO = new UserSafeDTO();
+            userSafeDTO.setUserID(user.getUserID());
+            userSafeDTO.setUserName(user.getUserName());
+            userSafeDTO.setRole(user.getRole());
+            userDTOs.add(userSafeDTO);
+        }
+        return userDTOs;
     }
 
     @Override

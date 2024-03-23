@@ -2,6 +2,7 @@ package com.example.WeBKKHustraUhrovec.Service;
 
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
+import com.example.WeBKKHustraUhrovec.Dto.UserSafeDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
@@ -24,5 +25,5 @@ public interface UserService {
 
     User updateUserRole(String id, String role);
 
-    List<User> getAllUsers();
+    List<UserSafeDTO> getAllUsers();
 }

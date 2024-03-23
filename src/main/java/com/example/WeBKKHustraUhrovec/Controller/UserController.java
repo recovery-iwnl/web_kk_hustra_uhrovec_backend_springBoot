@@ -2,6 +2,7 @@ package com.example.WeBKKHustraUhrovec.Controller;
 
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
+import com.example.WeBKKHustraUhrovec.Dto.UserSafeDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/getUsersList")
-    public List<User> getAllUsers() {return userService.getAllUsers();}
+    public List<UserSafeDTO> getAllUsers() {return userService.getAllUsers();}
     @DeleteMapping(path = "/deleteUser")
     public String deleteUser(@RequestParam String email) {
         return userService.deleteUser(email);
