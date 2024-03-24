@@ -1,14 +1,17 @@
 package com.example.WeBKKHustraUhrovec.Service.impl;
 
+import com.example.WeBKKHustraUhrovec.Dto.CommentDTO;
 import com.example.WeBKKHustraUhrovec.Entity.Comment;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Repo.CommentRepo;
 import com.example.WeBKKHustraUhrovec.Repo.UserRepo;
 import com.example.WeBKKHustraUhrovec.Service.CommentService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentIMPL implements CommentService {
@@ -20,21 +23,40 @@ public class CommentIMPL implements CommentService {
     private UserRepo userRepo;
 
     @Override
-    public Comment addComment(String email, Comment comment) {
+    public CommentDTO addComment(String email, Comment comment) {
         User userN = userRepo.findByEmail(email);
         Comment comment1 = new Comment(comment.getText(), comment.getSubject(), userN,0, comment.getDate());
-        return commentRepo.save(comment1);
+        commentRepo.save(comment1);
+        return getCommentDTO(comment1);
+    }
+
+    @NotNull
+    private CommentDTO getCommentDTO(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(comment.getId());
+        commentDTO.setText(comment.getText());
+        commentDTO.setSubject(comment.getSubject());
+        commentDTO.setUsername(comment.getUser().getUserName());
+        commentDTO.setRole(comment.getUser().getRole());
+        commentDTO.setLikes(comment.getLikes());
+        commentDTO.setDate(comment.getDate());
+        return commentDTO;
     }
 
     @Override
-    public List<Comment> getComments(Integer number) {
+    public List<CommentDTO> getComments(Integer number) {
+        List<Comment> comments;
         if (number == 1) {
-            return commentRepo.findAllByOrderByDateDesc();
+            comments = commentRepo.findAllByOrderByDateDesc();
         } else if (number == 2) {
-            return commentRepo.findAllByOrderByDateAsc();
+            comments = commentRepo.findAllByOrderByDateAsc();
         } else {
-            return commentRepo.findAllByOrderByLikesDesc();
+            comments = commentRepo.findAllByOrderByLikesDesc();
         }
+
+        return comments.stream()
+                .map(this::getCommentDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

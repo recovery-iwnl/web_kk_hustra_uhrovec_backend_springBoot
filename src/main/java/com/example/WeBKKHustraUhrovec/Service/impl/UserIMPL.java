@@ -14,11 +14,13 @@ import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -112,19 +114,32 @@ public class UserIMPL implements UserService {
 
     @Override
     @Transactional
-    public String deleteUser(String email) {
-        if (userRepo.findByEmail(email) == null) {
+    public String deleteUser(String id) {
+        if (userRepo.findByUserID(Integer.parseInt(id)) == null) {
             return "User doesn't exist";
         } else {
-            User user = userRepo.findByEmail(email);
+            User user = userRepo.findByUserID(Integer.parseInt(id));
             commentRepo.deleteAllByUser(user);
             userRepo.deleteById(user.getUserID());
             return "User " + user.getUserName() + " was deleted.";
         }
     }
 
+
+
     @Override
-    public User updateUser(UserDTO userDto) {
+    public String getNewestUser() {
+        Optional<User> newestUser = userRepo.findTopByOrderByUserIDDesc();
+        return newestUser.map(User::getUserName).orElse(null);
+    }
+
+    @Override
+    public Integer getNumberOfUsers() {
+        return Math.toIntExact(userRepo.count());
+    }
+
+    @Override
+    public String updateUser(UserDTO userDto) {
         User user = userRepo.findById(userDto.getUserID()).orElse(null);
         if (user != null) {
             if (!user.getUserName().equals(userDto.getUserName()) && userRepo.existsByUserName(userDto.getUserName())) {
@@ -136,23 +151,28 @@ public class UserIMPL implements UserService {
 
             user.setUserName(userDto.getUserName());
             user.setEmail(userDto.getEmail());
-            user.setPassword(userDto.getPassword());
+            if (!Objects.equals(userDto.getPassword(), "")) {
+                user.setPassword(this.passwdEncoder.encode(userDto.getPassword()));
+            }
             user.setRole(userDto.getRole());
             userRepo.save(user);
-            user.setPassword(this.passwdEncoder.encode(user.getPassword()));
-
-            return userRepo.save(user);
+            return "User has been updated.";
         } else {
             throw new UserUpdateException("User not found");
         }
     }
 
     @Override
-    public User updateUserRole(String id, String role) {
+    public UserSafeDTO updateUserRole(String id, String role) {
         User user = userRepo.findById(Integer.valueOf(id)).orElse(null);
         if (user != null) {
             user.setRole(UserRole.valueOf(role));
-            return userRepo.save(user);
+            userRepo.save(user);
+            UserSafeDTO userSafeDTO = new UserSafeDTO();
+            userSafeDTO.setUserID(user.getUserID());
+            userSafeDTO.setUserName(user.getUserName());
+            userSafeDTO.setRole(user.getRole());
+            return userSafeDTO;
         } else {
             throw new UserUpdateException("User not found");
         }

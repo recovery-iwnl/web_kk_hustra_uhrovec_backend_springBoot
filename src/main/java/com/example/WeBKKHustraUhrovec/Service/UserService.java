@@ -6,6 +6,7 @@ import com.example.WeBKKHustraUhrovec.Dto.UserSafeDTO;
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,13 @@ public interface UserService {
 
     String deleteUser(String email);
 
-    User updateUser(UserDTO userDto);
+    String getNewestUser();
 
-    User updateUserRole(String id, String role);
+    Integer getNumberOfUsers();
+
+    String updateUser(UserDTO userDto);
+
+    UserSafeDTO updateUserRole(String id, String role);
 
     List<UserSafeDTO> getAllUsers();
 }

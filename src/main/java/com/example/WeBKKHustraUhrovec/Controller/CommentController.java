@@ -1,5 +1,6 @@
 package com.example.WeBKKHustraUhrovec.Controller;
 
+import com.example.WeBKKHustraUhrovec.Dto.CommentDTO;
 import com.example.WeBKKHustraUhrovec.Entity.Comment;
 import com.example.WeBKKHustraUhrovec.Entity.Team;
 import com.example.WeBKKHustraUhrovec.Service.CommentService;
@@ -16,12 +17,12 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     @PostMapping(path = "/save")
-    public Comment saveComment(@RequestParam String email,@RequestBody Comment comment) {
+    public CommentDTO saveComment(@RequestParam String email,@RequestBody Comment comment) {
         return commentService.addComment(email, comment);
     }
 
     @GetMapping(path = "/getCommentsList")
-    public List<Comment> getComments(@RequestParam Integer number) {
+    public List<CommentDTO> getComments(@RequestParam Integer number) {
         return commentService.getComments(number);
     }
 

@@ -52,17 +52,23 @@ public class UserController {
 
     @GetMapping(path = "/getUsersList")
     public List<UserSafeDTO> getAllUsers() {return userService.getAllUsers();}
+
+    @GetMapping(path = "/getNewestUser")
+    public String getNewestUser() {return userService.getNewestUser();}
+
+    @GetMapping(path = "/getNumberOfUsers")
+    public Integer getNumberOfUsers() {return userService.getNumberOfUsers();}
     @DeleteMapping(path = "/deleteUser")
-    public String deleteUser(@RequestParam String email) {
-        return userService.deleteUser(email);
+    public String deleteUser(@RequestParam String id) {
+        return userService.deleteUser(id);
     }
     @PutMapping(path = "/updateUser")
-    public User updateUser(@RequestBody UserDTO userDto) {
+    public String updateUser(@RequestBody UserDTO userDto) {
         return userService.updateUser(userDto);
     }
 
     @PutMapping(path = "/updateUserRole")
-    public User updateUserRole(@RequestParam String id, @RequestParam String role) {
+    public UserSafeDTO updateUserRole(@RequestParam String id, @RequestParam String role) {
         return userService.updateUserRole(id, role);
     }
 
