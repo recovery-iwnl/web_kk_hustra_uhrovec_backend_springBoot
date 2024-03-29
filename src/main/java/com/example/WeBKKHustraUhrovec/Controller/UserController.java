@@ -56,6 +56,11 @@ public class UserController {
     @GetMapping(path = "/getNewestUser")
     public String getNewestUser() {return userService.getNewestUser();}
 
+    @GetMapping(path = "/checkTokenExpiration")
+    public Boolean checkTokenExpiration(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        return userService.checkTokenExpiration(jwtToken);}
+
     @GetMapping(path = "/getNumberOfUsers")
     public Integer getNumberOfUsers() {return userService.getNumberOfUsers();}
     @DeleteMapping(path = "/deleteUser")

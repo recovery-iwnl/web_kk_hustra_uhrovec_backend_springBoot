@@ -14,7 +14,6 @@ import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -99,6 +98,11 @@ public class UserIMPL implements UserService {
     }
 
     @Override
+    public Boolean checkTokenExpiration(String token) {
+        return jwtTokenUtil.isTokenExpired(token);
+    }
+
+    @Override
     public List<UserSafeDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
         List<UserSafeDTO> userDTOs = new ArrayList<>();
@@ -143,10 +147,10 @@ public class UserIMPL implements UserService {
         User user = userRepo.findById(userDto.getUserID()).orElse(null);
         if (user != null) {
             if (!user.getUserName().equals(userDto.getUserName()) && userRepo.existsByUserName(userDto.getUserName())) {
-                throw new UserUpdateException("Username is already taken");
+                return "Username is already taken";
             }
             if (!user.getEmail().equals(userDto.getEmail()) && userRepo.existsByEmail(userDto.getEmail())) {
-                throw new UserUpdateException("Email is already registered");
+                return "Email is already registered";
             }
 
             user.setUserName(userDto.getUserName());

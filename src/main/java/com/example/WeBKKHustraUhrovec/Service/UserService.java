@@ -20,6 +20,8 @@ public interface UserService {
 
     User getUserByToken(String token);
 
+    Boolean checkTokenExpiration(String token);
+
     String deleteUser(String email);
 
     String getNewestUser();

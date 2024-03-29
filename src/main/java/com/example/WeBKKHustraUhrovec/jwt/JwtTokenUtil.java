@@ -2,6 +2,7 @@ package com.example.WeBKKHustraUhrovec.jwt;
 
 import com.example.WeBKKHustraUhrovec.Entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class JwtTokenUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token expires in 1 hour
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 120)) // Token expires in 2 hours
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
@@ -39,9 +40,14 @@ public class JwtTokenUtil {
         return (email.equals(user.getEmail()) && !isTokenExpired(token));
     }
 
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = extractExpiration(token);
-        return expiration.before(new Date());
+    public Boolean isTokenExpired(String token) {
+        try {
+            final Date expiration = extractExpiration(token);
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            // Token has already expired
+            return true;
+        }
     }
 
     private Date extractExpiration(String token) {
