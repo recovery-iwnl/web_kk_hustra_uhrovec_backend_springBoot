@@ -13,7 +13,5 @@ public interface CommentService {
 
     List<CommentDTO> getComments(Integer number);
 
-    String likeComment(Long id);
-
     String deleteComment(Long id);
 }

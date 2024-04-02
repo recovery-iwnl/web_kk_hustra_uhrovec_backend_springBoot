@@ -26,11 +26,6 @@ public class CommentController {
         return commentService.getComments(number);
     }
 
-    @PutMapping(path = "/likeComment")
-    public String likeComment(@RequestParam Long id) {
-        return commentService.likeComment(id);
-    }
-
     @DeleteMapping(path = "/deleteComment")
     public String deleteComment(@RequestParam Long id) {
         return commentService.deleteComment(id);

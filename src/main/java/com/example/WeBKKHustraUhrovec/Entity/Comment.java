@@ -32,19 +32,14 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "likes", length = 255)
-    @PositiveOrZero(message = "Likes must be greater than or equal to 0")
-    private int likes;
-
     @Column(name = "date")
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime date;
 
-    public Comment(String text, String subject, User user, int likes, LocalDateTime date) {
+    public Comment(String text, String subject, User user, LocalDateTime date) {
         this.text = text;
         this.subject = subject;
         this.user = user;
-        this.likes = likes;
         this.date = date;
     }
 
@@ -81,14 +76,6 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
     }
 
     public LocalDateTime getDate() {
