@@ -9,6 +9,7 @@ import com.example.WeBKKHustraUhrovec.Service.PlayerService;
 import com.example.WeBKKHustraUhrovec.Service.TeamService;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import com.example.WeBKKHustraUhrovec.jwt.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,20 +27,14 @@ public class TeamController {
     private TeamService teamService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserService userService;
+    private Validation validation;
 
     @PostMapping(path = "/save")
-    public ResponseEntity<Team> saveTeam(@RequestBody Team team,
+    public ResponseEntity<?> saveTeam(@RequestBody Team team,
                                          @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Team savedTeam = teamService.addTeam(team);
@@ -62,28 +57,22 @@ public class TeamController {
     }
 
     @DeleteMapping(path = "/deleteTeam")
-    public ResponseEntity<String> deleteTeam(@RequestParam Integer id,
+    public ResponseEntity<?> deleteTeam(@RequestParam Integer id,
                                              @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         String result = teamService.deleteTeam(id);
         return ResponseEntity.ok(result);
     }
     @PutMapping(path = "/updateTeam")
-    public ResponseEntity<Team> updateTeam(@RequestBody Team team,
+    public ResponseEntity<?> updateTeam(@RequestBody Team team,
                                            @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Team updatedTeam = teamService.updateTeam(team);

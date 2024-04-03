@@ -3,11 +3,10 @@ package com.example.WeBKKHustraUhrovec.Controller;
 import com.example.WeBKKHustraUhrovec.Dto.LoginDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserDTO;
 import com.example.WeBKKHustraUhrovec.Dto.UserSafeDTO;
-import com.example.WeBKKHustraUhrovec.Entity.User;
-import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import com.example.WeBKKHustraUhrovec.jwt.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +26,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Validation validation;
+
     @PostMapping(path = "/save")
     public String saveUser(@RequestBody UserDTO userDto) {
 
@@ -44,13 +46,9 @@ public class UserController {
     @GetMapping(path = "/getUsersList")
     public ResponseEntity<?> getAllUsers(@RequestHeader(value = "Authorization",  required = false) String token) {
 
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         List<UserSafeDTO> usersList = userService.getAllUsers();
@@ -87,14 +85,10 @@ public class UserController {
     }
 
     @PutMapping(path = "/updateUserRole")
-    public ResponseEntity<UserSafeDTO> updateUserRole(@RequestParam String id, @RequestParam String role, @RequestHeader(value = "Authorization",  required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    public ResponseEntity<?> updateUserRole(@RequestParam String id, @RequestParam String role, @RequestHeader(value = "Authorization",  required = false) String token) {
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         UserSafeDTO result = userService.updateUserRole(id, role);

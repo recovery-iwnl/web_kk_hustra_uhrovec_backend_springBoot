@@ -6,6 +6,7 @@ import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Service.ImageService;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import com.example.WeBKKHustraUhrovec.jwt.Validation;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,20 +27,14 @@ public class ImageController {
     private ImageService imageService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserService userService;
+    private Validation validation;
 
     @PostMapping("/upload")
-    public ResponseEntity<Image> uploadImage(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
                                              @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Image savedImage = imageService.addImage(file);
@@ -75,14 +70,11 @@ public class ImageController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteImage(@PathVariable Long id,
+    public ResponseEntity<?> deleteImage(@PathVariable Long id,
                                               @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         imageService.deleteImage(id);

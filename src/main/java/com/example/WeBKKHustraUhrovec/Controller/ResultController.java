@@ -6,6 +6,7 @@ import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Service.ResultService;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import com.example.WeBKKHustraUhrovec.jwt.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +29,17 @@ public class ResultController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Validation validation;
+
     @PostMapping(path = "/saveSimple")
-    public ResponseEntity<Result> saveResultSimple(@RequestParam String teamIdHome,
+    public ResponseEntity<?> saveResultSimple(@RequestParam String teamIdHome,
                                                    @RequestParam String teamIdAway,
                                                    @RequestBody Result result,
                                                    @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Result savedResult = resultService.addResultSimple(teamIdHome, teamIdAway, result);
@@ -66,14 +67,11 @@ public class ResultController {
     }
 
     @DeleteMapping(path = "/deleteResult")
-    public ResponseEntity<String> deleteResult(@RequestParam Integer id,
+    public ResponseEntity<?> deleteResult(@RequestParam Integer id,
                                                @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         String result = resultService.deleteResult(id);

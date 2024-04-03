@@ -7,6 +7,7 @@ import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Service.PlayerService;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
 import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
+import com.example.WeBKKHustraUhrovec.jwt.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,22 +25,16 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserService userService;
+    private Validation validation;
 
 
     @PostMapping(path = "/save")
-    public ResponseEntity<Player> savePlayer(@RequestParam String id,
+    public ResponseEntity<?> savePlayer(@RequestParam String id,
                                              @RequestBody Player player,
                                              @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Player savedPlayer = playerService.addPlayer(id, player);
@@ -47,14 +42,11 @@ public class PlayerController {
     }
 
     @PostMapping(path = "/saveUhrovec")
-    public ResponseEntity<Player> savePlayerUhrovec(@RequestBody Player player,
+    public ResponseEntity<?> savePlayerUhrovec(@RequestBody Player player,
                                                     @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Player savedPlayer = playerService.addPlayerUhrovec(player);
@@ -83,14 +75,11 @@ public class PlayerController {
     @GetMapping(path = "/getPlayersList")
     public List<Player> getAllPlayers() {return playerService.getAllPlayers();}
     @DeleteMapping(path = "/deletePlayer")
-    public ResponseEntity<String> deletePlayer(@RequestParam Integer id,
+    public ResponseEntity<?> deletePlayer(@RequestParam Integer id,
                                                @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         String result = playerService.deletePlayer(id);
@@ -98,14 +87,11 @@ public class PlayerController {
     }
 
     @PutMapping(path = "/updatePlayer")
-    public ResponseEntity<Player> updatePlayer(@RequestBody Player player,
+    public ResponseEntity<?> updatePlayer(@RequestBody Player player,
                                                @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        User user = userService.getUserByToken(token.substring(7));
-        if (user.getRole() != UserRole.ADMIN) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
         }
 
         Player updatedPlayer = playerService.updatePlayer(player);
