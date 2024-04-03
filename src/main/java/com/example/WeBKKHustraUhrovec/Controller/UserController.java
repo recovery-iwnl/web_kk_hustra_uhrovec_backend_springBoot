@@ -7,7 +7,9 @@ import com.example.WeBKKHustraUhrovec.Entity.User;
 import com.example.WeBKKHustraUhrovec.Enum.UserRole;
 import com.example.WeBKKHustraUhrovec.Response.LoginResponse;
 import com.example.WeBKKHustraUhrovec.Service.UserService;
+import com.example.WeBKKHustraUhrovec.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("api/v1/user")
 public class UserController {
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private UserService userService;
@@ -36,22 +41,21 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @GetMapping(path = "/getUserDetails")
-    public ResponseEntity<User> getUserDetails(@RequestHeader("Authorization") String token) {
-
-        String jwtToken = token.substring(7);
-
-        User user = userService.getUserByToken(jwtToken);
-
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping(path = "/getUsersList")
-    public List<UserSafeDTO> getAllUsers() {return userService.getAllUsers();}
+    public ResponseEntity<?> getAllUsers(@RequestHeader(value = "Authorization",  required = false) String token) {
+
+        if (token == null || !isAuthenticated(token.substring(7))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        User user = userService.getUserByToken(token.substring(7));
+        if (user.getRole() != UserRole.ADMIN) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+
+        List<UserSafeDTO> usersList = userService.getAllUsers();
+        return ResponseEntity.ok(usersList);
+    }
 
     @GetMapping(path = "/getNewestUser")
     public String getNewestUser() {return userService.getNewestUser();}
@@ -75,6 +79,15 @@ public class UserController {
     @PutMapping(path = "/updateUserRole")
     public UserSafeDTO updateUserRole(@RequestParam String id, @RequestParam String role) {
         return userService.updateUserRole(id, role);
+    }
+
+
+    private boolean isAuthenticated(String token) {
+        if (token != null) {
+            // Validate JWT token
+            return !jwtTokenUtil.isTokenExpired(token);
+        }
+        return false;
     }
 
 
