@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping(path = "/getUsersList")
     public ResponseEntity<?> getAllUsers(@RequestHeader(value = "Authorization",  required = false) String token) {
 
-        if (token == null || !isAuthenticated(token.substring(7))) {
+        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
 
@@ -68,27 +68,36 @@ public class UserController {
     @GetMapping(path = "/getNumberOfUsers")
     public Integer getNumberOfUsers() {return userService.getNumberOfUsers();}
     @DeleteMapping(path = "/deleteUser")
-    public String deleteUser(@RequestParam String id) {
-        return userService.deleteUser(id);
+    public ResponseEntity<String> deleteUser(@RequestParam String id, @RequestHeader(value = "Authorization",  required = false) String token) {
+        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String result = userService.deleteUser(id);
+        return ResponseEntity.ok(result);
     }
     @PutMapping(path = "/updateUser")
-    public String updateUser(@RequestBody UserDTO userDto) {
-        return userService.updateUser(userDto);
+    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDto, @RequestHeader(value = "Authorization",  required = false) String token) {
+        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        String result = userService.updateUser(userDto);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping(path = "/updateUserRole")
-    public UserSafeDTO updateUserRole(@RequestParam String id, @RequestParam String role) {
-        return userService.updateUserRole(id, role);
-    }
-
-
-    private boolean isAuthenticated(String token) {
-        if (token != null) {
-            // Validate JWT token
-            return !jwtTokenUtil.isTokenExpired(token);
+    public ResponseEntity<UserSafeDTO> updateUserRole(@RequestParam String id, @RequestParam String role, @RequestHeader(value = "Authorization",  required = false) String token) {
+        if (token == null || jwtTokenUtil.isTokenExpired(token.substring(7))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-        return false;
+
+        User user = userService.getUserByToken(token.substring(7));
+        if (user.getRole() != UserRole.ADMIN) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+
+        UserSafeDTO result = userService.updateUserRole(id, role);
+        return ResponseEntity.ok(result);
     }
-
-
 }
