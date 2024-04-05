@@ -24,7 +24,7 @@ public class News {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int newsID;
 
-    @Column(name = "text", length = 10000)
+    @Column(name = "text", length = 85)
     @NotEmpty(message = "Text must not be empty")
     private String text;
 
