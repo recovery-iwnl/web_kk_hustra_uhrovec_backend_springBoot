@@ -24,14 +24,12 @@ public class News {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int newsID;
 
-    @Column(name = "text")
+    @Column(name = "text", length = 10000)
     @NotEmpty(message = "Text must not be empty")
-    @Size(max = 255, message = "Comment must have less than 255 characters")
     private String text;
 
     @Column(name = "subject")
     @NotEmpty(message = "Subject must not be empty")
-    @Size(max = 255, message = "Subject must have less than 255 characters")
     private String subject;
 
     @ManyToOne

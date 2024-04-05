@@ -30,8 +30,13 @@ public class NewsController {
     }
 
     @GetMapping(path = "/getAllNews")
-    public ResponseEntity<?> getNews() {
+    public ResponseEntity<?> getAllNews() {
         return ResponseEntity.ok(newsService.getAllNews());
+    }
+
+    @GetMapping(path = "/getNews")
+    public ResponseEntity<?> getSingleNewsById(@RequestParam String id) {
+        return ResponseEntity.ok(newsService.getNews(id));
     }
 
     @DeleteMapping(path = "/delete")

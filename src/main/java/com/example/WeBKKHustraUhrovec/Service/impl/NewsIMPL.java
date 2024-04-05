@@ -34,7 +34,12 @@ public class NewsIMPL implements NewsService {
 
     @Override
     public List<News> getAllNews() {
-        return  newsRepo.findAll();
+        return newsRepo.findAllByOrderByDateDesc();
+    }
+
+    @Override
+    public News getNews(String id) {
+        return newsRepo.findById(Integer.valueOf(id)).orElse(null);
     }
 
 }
