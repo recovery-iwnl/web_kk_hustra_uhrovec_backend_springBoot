@@ -16,14 +16,26 @@ public class LeagueYearIMPL implements LeagueYearService {
 
     @Override
     public LeagueYear addLeagueYear(String year) {
-        LeagueYear leagueYear = new LeagueYear();
-        leagueYear.setYear(year);
+        LeagueYear leagueYear = new LeagueYear(year);
         return leagueYearRepo.save(leagueYear);
     }
 
     @Override
     public List<LeagueYear> getAllLeagueYears() {
         return leagueYearRepo.findAll();
+    }
+
+    @Override
+    public String updateLeagueYear(String id, String year) {
+        LeagueYear yearN = leagueYearRepo.findById(Integer.valueOf(id)).orElse(null);
+        if (yearN != null) {
+            yearN.setYear(year);
+            leagueYearRepo.save(yearN);
+            return "League year has been updated!";
+        } else {
+            return "League year doesn't exist!";
+        }
+
     }
 
     @Override

@@ -20,8 +20,7 @@ public class LeagueYear {
     @Setter
     private String year;
 
-    public LeagueYear(int yearId, String year) {
-        this.yearId = yearId;
+    public LeagueYear(String year) {
         this.year = year;
     }
 

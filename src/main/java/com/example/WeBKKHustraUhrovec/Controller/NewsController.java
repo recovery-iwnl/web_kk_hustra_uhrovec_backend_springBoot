@@ -39,6 +39,16 @@ public class NewsController {
         return ResponseEntity.ok(newsService.getNews(id));
     }
 
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateNews(@RequestBody News news,
+                                      @RequestHeader(value = "Authorization", required = false) String token) {
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
+        }
+        return ResponseEntity.ok(newsService.updateNews(news));
+    }
+
     @DeleteMapping(path = "/delete")
     public ResponseEntity<?> deleteNews(@RequestParam String id,
                                       @RequestHeader(value = "Authorization", required = false) String token) {

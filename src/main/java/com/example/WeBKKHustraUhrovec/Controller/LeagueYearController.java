@@ -37,6 +37,18 @@ public class LeagueYearController {
         return ResponseEntity.ok(savedLeagueYear);
     }
 
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateLeagueYear(@RequestParam String id, @RequestParam String year,
+                                           @RequestHeader(value = "Authorization", required = false) String token) {
+        ResponseEntity<?> validationResponse = validation.validateTokenAndGetUser(token);
+        if (validationResponse != null) {
+            return validationResponse;
+        }
+
+        String updated = leagueYearService.updateLeagueYear(id,year);
+        return ResponseEntity.ok(updated);
+    }
+
     @GetMapping(path = "/getAll")
     public List<LeagueYear> getAll() {
         return leagueYearService.getAllLeagueYears();

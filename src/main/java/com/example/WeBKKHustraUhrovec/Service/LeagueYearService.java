@@ -14,5 +14,7 @@ public interface LeagueYearService {
 
     List<LeagueYear> getAllLeagueYears();
 
+    String updateLeagueYear(String id, String year);
+
     void deleteLeagueYear(String id);
 }

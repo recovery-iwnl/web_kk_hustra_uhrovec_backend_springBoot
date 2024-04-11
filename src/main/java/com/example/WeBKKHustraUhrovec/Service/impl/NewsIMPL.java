@@ -40,6 +40,24 @@ public class NewsIMPL implements NewsService {
     }
 
     @Override
+    public String updateNews(News news) {
+        News newsN = newsRepo.findById(news.getNewsID()).orElse(null);
+        if (newsN != null) {
+            newsN.setDate(news.getDate());
+            newsN.setSubject(news.getSubject());
+            newsN.setText(news.getText());
+            newsN.setImage(news.getImage());
+            newsRepo.save(newsN);
+            return "News successfully updated";
+        } else {
+            return "News with this ID don't exist";
+        }
+
+
+
+    }
+
+    @Override
     public List<News> getAllNews() {
         return newsRepo.findAllByOrderByDateDesc();
     }

@@ -11,6 +11,8 @@ public interface NewsService {
 
     String deleteNews(String id);
 
+    String updateNews(News news);
+
     List<News> getAllNews();
     News getNews(String id);
 }
