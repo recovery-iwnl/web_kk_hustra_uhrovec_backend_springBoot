@@ -16,5 +16,5 @@ public interface LeagueYearService {
 
     String updateLeagueYear(String id, String year);
 
-    void deleteLeagueYear(String id);
+    String deleteLeagueYear(String id);
 }

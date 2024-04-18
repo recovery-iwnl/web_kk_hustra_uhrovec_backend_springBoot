@@ -62,7 +62,7 @@ public class LeagueYearController {
             return validationResponse;
         }
 
-        leagueYearService.deleteLeagueYear(id);
-        return ResponseEntity.noContent().build();
+        String resp = leagueYearService.deleteLeagueYear(id);
+        return ResponseEntity.ok(resp);
     }
 }

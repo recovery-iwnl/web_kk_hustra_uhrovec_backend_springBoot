@@ -30,9 +30,9 @@ public class CommentIMPL implements CommentService {
     @Override
     public CommentDTO addComment(String email, Comment comment) {
         User userN = userRepo.findByEmail(email);
-        Comment comment1 = new Comment(comment.getText(), comment.getSubject(), userN, comment.getDate());
-        commentRepo.save(comment1);
-        return getCommentDTO(comment1);
+        comment.setUser(userN);
+        commentRepo.save(comment);
+        return getCommentDTO(comment);
     }
 
     @NotNull

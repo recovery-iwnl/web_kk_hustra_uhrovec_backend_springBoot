@@ -39,7 +39,13 @@ public class LeagueYearIMPL implements LeagueYearService {
     }
 
     @Override
-    public void deleteLeagueYear(String id) {
-        leagueYearRepo.findById(Integer.valueOf(id)).ifPresent(leagueYear -> leagueYearRepo.delete(leagueYear));
+    public String deleteLeagueYear(String id) {
+        LeagueYear year = leagueYearRepo.findById(Integer.valueOf(id)).orElse(null);
+        if (year != null) {
+            leagueYearRepo.delete(year);
+            return "Year deleted successfully!";
+        } else {
+            return "Year doesn't exsit!";
+        }
     }
 }
